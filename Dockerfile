@@ -6,4 +6,5 @@ RUN apt update && apt install --no-install-recommends -y inotify-tools &&\
     rm -rf /tmp/* /var/tmp/* /var/lib/apt/lists/*
 
 ADD ["*.sh", "/"]
+ADD nginx.conf  /usr/local/openresty/nginx/conf/nginx.conf
 CMD ["/auto-reload-1.sh"]
