@@ -7,6 +7,6 @@ RUN apt update && apt install --no-install-recommends -y \
     rm -rf /tmp/* /var/tmp/* /var/lib/apt/lists/*
 
 COPY graphicsmagick /usr/local/openresty/lualib/
-ADD  ["*.sh", "/cmd"]
+ADD  ["*.sh", "/cmd/"]
 ADD  nginx.conf  /usr/local/openresty/nginx/conf/nginx.conf
 CMD  ["/cmd/auto-reload-1.sh"]
