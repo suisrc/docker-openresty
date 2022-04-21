@@ -7,7 +7,7 @@ on:
 env:
   GITHUB_IMAGE_NAME: openresty
   DOCKER_IMAGE_NAME: suisrc/openresty
-  DOCKER_VERSION: '1.19.9.1-2'
+  DOCKER_VERSION: '1.19.9.1-10'
   QUAY_REGISTRY: quay.io
   DOCKER_REGISTRY: docker.io
 
