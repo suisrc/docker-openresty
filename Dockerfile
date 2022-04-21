@@ -2,7 +2,7 @@
 # 1.19.9.1-2-buster buster-fat alpine 
 FROM openresty/openresty:1.19.9.1-10-buster-fat
 
-RUN apt update && apt install --no-install-recommends -y inotify-tools &&\
+RUN apt update && apt install --no-install-recommends -y inotify-tools graphicsmagick &&\
     rm -rf /tmp/* /var/tmp/* /var/lib/apt/lists/*
 
 ADD ["*.sh", "/"]

@@ -2,12 +2,12 @@ name: publish-docker
 
 on:
   push:
-    branches: [ master ]
+    branches: [ graphicsmagick ]
 
 env:
   GITHUB_IMAGE_NAME: openresty
   DOCKER_IMAGE_NAME: suisrc/openresty
-  DOCKER_VERSION: '1.19.9.1-10'
+  DOCKER_VERSION: '1.19.9.1-10-gm'
   QUAY_REGISTRY: quay.io
   DOCKER_REGISTRY: docker.io
 
