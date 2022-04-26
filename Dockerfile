@@ -1,7 +1,7 @@
 # https://hub.docker.com/r/openresty/openresty/tags
 FROM openresty/openresty:1.19.9.1-12-alpine
 
-RUN sed -i "s|3.15|edge|g" /etc/apk/repositories &&\
+RUN sed -i "s|v3.15|edge|g" /etc/apk/repositories &&\
     apk update && apk --no-cache inotify-tools graphicsmagick-dev &&\
     rm -rf /tmp/* /var/tmp/* /var/lib/apt/lists/*
 
