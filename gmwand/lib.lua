@@ -808,9 +808,6 @@ unsigned int MagickQuantizeImages( MagickWand *wand, const unsigned long number_
 double *MagickQueryFontMetrics( MagickWand *wand, const DrawingWand *drawing_wand,
                                 const char *text );
 
-double *MagickQueryFontMetrics( MagickWand *wand, const DrawingWand *drawing_wand,
-                                const char *text );
-
 char ** MagickQueryFonts( const char *pattern, unsigned long *number_fonts );
 
 char ** MagickQueryFormats( const char *pattern, unsigned long *number_formats );
@@ -1043,270 +1040,270 @@ unsigned int MagickWriteImages( MagickWand *wand, const char *filename,
 //===================================================================================================
 // Drawing Wand: http://www.graphicsmagick.org/wand/drawing_wand.html
 
-DrawingWand *NewDrawingWand();
+DrawingWand *MagickNewDrawingWand( void );
 
-DrawingWand *CloneDrawingWand( const DrawingWand *drawing_wand );
+DrawingWand *MagickCloneDrawingWand( const DrawingWand *drawing_wand );
 
-void DestroyDrawingWand( DrawingWand *drawing_wand );
+void MagickDestroyDrawingWand( DrawingWand *drawing_wand );
 
-void DrawAnnotation( DrawingWand *drawing_wand, const double x, const double y,
+void MagickDrawAnnotation( DrawingWand *drawing_wand, const double x, const double y,
                      const unsigned char *text );
 
-void DrawAffine( DrawingWand *drawing_wand, const AffineMatrix *affine );
+void MagickDrawAffine( DrawingWand *drawing_wand, const AffineMatrix *affine );
 
-DrawingWand DrawAllocateWand( const DrawInfo *draw_info, ImageInfo *image );
+DrawingWand MagickDrawAllocateWand( const DrawInfo *draw_info, ImageInfo *image );
 
-void DrawArc( DrawingWand *drawing_wand, const double sx, const double sy, const double ex,
+void MagickDrawArc( DrawingWand *drawing_wand, const double sx, const double sy, const double ex,
               const double ey, const double sd, const double ed );
 
-void DrawBezier( DrawingWand *drawing_wand, const unsigned long number_coordinates,
+void MagickDrawBezier( DrawingWand *drawing_wand, const unsigned long number_coordinates,
                  const PointInfo *coordinates );
 
-void DrawCircle( DrawingWand *drawing_wand, const double ox, const double oy, const double px,
+void MagickDrawCircle( DrawingWand *drawing_wand, const double ox, const double oy, const double px,
                  const double py );
 
-MagickPassFail DrawClearException( DrawingWand *drawing_wand );
+MagickPassFail MagickDrawClearException( DrawingWand *drawing_wand );
 
-char *DrawGetClipPath( const DrawingWand *drawing_wand );
+char *MagickDrawGetClipPath( const DrawingWand *drawing_wand );
 
-void DrawSetClipPath( DrawingWand *drawing_wand, const char *clip_path );
+void MagickDrawSetClipPath( DrawingWand *drawing_wand, const char *clip_path );
 
-FillRule DrawGetClipRule( const DrawingWand *drawing_wand );
+FillRule MagickDrawGetClipRule( const DrawingWand *drawing_wand );
 
-void DrawSetClipRule( DrawingWand *drawing_wand, const FillRule fill_rule );
+void MagickDrawSetClipRule( DrawingWand *drawing_wand, const FillRule fill_rule );
 
-ClipPathUnits DrawGetClipUnits( const DrawingWand *drawing_wand );
+ClipPathUnits MagickDrawGetClipUnits( const DrawingWand *drawing_wand );
 
-char *DrawGetException( const DrawingWand *drawing_wand, ExceptionType *severity );
+char *MagickDrawGetException( const DrawingWand *drawing_wand, ExceptionType *severity );
 
-void DrawSetClipUnits( DrawingWand *drawing_wand, const ClipPathUnits clip_units );
+void MagickDrawSetClipUnits( DrawingWand *drawing_wand, const ClipPathUnits clip_units );
 
-void DrawColor( DrawingWand *drawing_wand, const double x, const double y,
+void MagickDrawColor( DrawingWand *drawing_wand, const double x, const double y,
                 const PaintMethod paintMethod );
 
-void DrawComment( DrawingWand *drawing_wand, const char *comment );
+void MagickDrawComment( DrawingWand *drawing_wand, const char *comment );
 
-void DrawEllipse( DrawingWand *drawing_wand, const double ox, const double oy, const double rx,
+void MagickDrawEllipse( DrawingWand *drawing_wand, const double ox, const double oy, const double rx,
                   const double ry, const double start, const double end );
 
-void DrawGetFillColor( const DrawingWand *drawing_wand, PixelWand *fill_color );
+void MagickDrawGetFillColor( const DrawingWand *drawing_wand, PixelWand *fill_color );
 
-void DrawSetFillColor( DrawingWand *drawing_wand, const PixelWand *fill_wand );
+void MagickDrawSetFillColor( DrawingWand *drawing_wand, const PixelWand *fill_wand );
 
-void DrawSetFillPatternURL( DrawingWand *drawing_wand, const char *fill_url );
+void MagickDrawSetFillPatternURL( DrawingWand *drawing_wand, const char *fill_url );
 
-double DrawGetFillOpacity( const DrawingWand *drawing_wand );
+double MagickDrawGetFillOpacity( const DrawingWand *drawing_wand );
 
-void DrawSetFillOpacity( DrawingWand *drawing_wand, const double fill_opacity );
+void MagickDrawSetFillOpacity( DrawingWand *drawing_wand, const double fill_opacity );
 
-FillRule DrawGetFillRule( const DrawingWand *drawing_wand );
+FillRule MagickDrawGetFillRule( const DrawingWand *drawing_wand );
 
-void DrawSetFillRule( DrawingWand *drawing_wand, const FillRule fill_rule );
+void MagickDrawSetFillRule( DrawingWand *drawing_wand, const FillRule fill_rule );
 
-char *DrawGetFont( const DrawingWand *drawing_wand );
+char *MagickDrawGetFont( const DrawingWand *drawing_wand );
 
-void DrawSetFont( DrawingWand *drawing_wand, const char *font_name );
+void MagickDrawSetFont( DrawingWand *drawing_wand, const char *font_name );
 
-char *DrawGetFontFamily( const DrawingWand *drawing_wand );
+char *MagickDrawGetFontFamily( const DrawingWand *drawing_wand );
 
-void DrawSetFontFamily( DrawingWand *drawing_wand, const char *font_family );
+void MagickDrawSetFontFamily( DrawingWand *drawing_wand, const char *font_family );
 
-double DrawGetFontSize( const DrawingWand *drawing_wand );
+double MagickDrawGetFontSize( const DrawingWand *drawing_wand );
 
-void DrawSetFontSize( DrawingWand *drawing_wand, const double pointsize );
+void MagickDrawSetFontSize( DrawingWand *drawing_wand, const double pointsize );
 
-StretchType DrawGetFontStretch( const DrawingWand *drawing_wand );
+StretchType MagickDrawGetFontStretch( const DrawingWand *drawing_wand );
 
-void DrawSetFontStretch( DrawingWand *drawing_wand, const StretchType font_stretch );
+void MagickDrawSetFontStretch( DrawingWand *drawing_wand, const StretchType font_stretch );
 
-StyleType DrawGetFontStyle( const DrawingWand *drawing_wand );
+StyleType MagickDrawGetFontStyle( const DrawingWand *drawing_wand );
 
-void DrawSetFontStyle( DrawingWand *drawing_wand, const StyleType style );
+void MagickDrawSetFontStyle( DrawingWand *drawing_wand, const StyleType style );
 
-unsigned long DrawGetFontWeight( const DrawingWand *drawing_wand );
+unsigned long MagickDrawGetFontWeight( const DrawingWand *drawing_wand );
 
-void DrawSetFontWeight( DrawingWand *drawing_wand, const unsigned long font_weight );
+void MagickDrawSetFontWeight( DrawingWand *drawing_wand, const unsigned long font_weight );
 
-GravityType DrawGetGravity( const DrawingWand *drawing_wand );
+GravityType MagickDrawGetGravity( const DrawingWand *drawing_wand );
 
-void DrawSetGravity( DrawingWand *drawing_wand, const GravityType gravity );
+void MagickDrawSetGravity( DrawingWand *drawing_wand, const GravityType gravity );
 
-void DrawComposite( DrawingWand *drawing_wand, const CompositeOperator composite_operator,
+void MagickDrawComposite( DrawingWand *drawing_wand, const CompositeOperator composite_operator,
                     const double x, const double y, const double width, const double height,
                     const ImageInfo *image );
 
-void DrawLine( DrawingWand *drawing_wand, const double sx, const double sy, const double ex,
+void MagickDrawLine( DrawingWand *drawing_wand, const double sx, const double sy, const double ex,
                const double ey );
 
-void DrawMatte( DrawingWand *drawing_wand, const double x, const double y,
+void MagickDrawMatte( DrawingWand *drawing_wand, const double x, const double y,
                 const PaintMethod paint_method );
 
-void DrawPathClose( DrawingWand *drawing_wand );
+void MagickDrawPathClose( DrawingWand *drawing_wand );
 
-void DrawPathCurveToAbsolute( DrawingWand *drawing_wand, const double x1, const double y1,
+void MagickDrawPathCurveToAbsolute( DrawingWand *drawing_wand, const double x1, const double y1,
                               const double x2, const double y2, const double x,
                               const double y );
 
-void DrawPathCurveToRelative( DrawingWand *drawing_wand, const double x1, const double y1,
+void MagickDrawPathCurveToRelative( DrawingWand *drawing_wand, const double x1, const double y1,
                               const double x2, const double y2, const double x,
                               const double y );
 
-void DrawPathCurveToQuadraticBezierAbsolute( DrawingWand *drawing_wand, const double x1,
+void MagickDrawPathCurveToQuadraticBezierAbsolute( DrawingWand *drawing_wand, const double x1,
                                              const double y1, const double x, const double y );
 
-void DrawPathCurveToQuadraticBezierRelative( DrawingWand *drawing_wand, const double x1,
+void MagickDrawPathCurveToQuadraticBezierRelative( DrawingWand *drawing_wand, const double x1,
                                              const double y1, const double x,
                                              const double y );
 
-void DrawPathCurveToQuadraticBezierSmoothAbsolute( DrawingWand *drawing_wand, const double x,
+void MagickDrawPathCurveToQuadraticBezierSmoothAbsolute( DrawingWand *drawing_wand, const double x,
                                                    const double y );
 
-void DrawPathCurveToQuadraticBezierSmoothRelative( DrawingWand *drawing_wand, const double x,
+void MagickDrawPathCurveToQuadraticBezierSmoothRelative( DrawingWand *drawing_wand, const double x,
                                                    const double y );
 
-void DrawPathCurveToSmoothAbsolute( DrawingWand *drawing_wand, const double x2, const double y2,
+void MagickDrawPathCurveToSmoothAbsolute( DrawingWand *drawing_wand, const double x2, const double y2,
                                     const double x, const double y );
 
-void DrawPathCurveToSmoothRelative( DrawingWand *drawing_wand, const double x2,
+void MagickDrawPathCurveToSmoothRelative( DrawingWand *drawing_wand, const double x2,
                                     const double y2, const double x, const double y );
 
-void DrawPathEllipticArcAbsolute( DrawingWand *drawing_wand, const double rx, const double ry,
+void MagickDrawPathEllipticArcAbsolute( DrawingWand *drawing_wand, const double rx, const double ry,
                                   const double x_axis_rotation,
                                   unsigned int large_arc_flag, unsigned int sweep_flag,
                                   const double x, const double y );
 
-void DrawPathEllipticArcRelative( DrawingWand *drawing_wand, const double rx, const double ry,
+void MagickDrawPathEllipticArcRelative( DrawingWand *drawing_wand, const double rx, const double ry,
                                   const double x_axis_rotation,
                                   unsigned int large_arc_flag, unsigned int sweep_flag,
                                   const double x, const double y );
 
-void DrawPathFinish( DrawingWand *drawing_wand );
+void MagickDrawPathFinish( DrawingWand *drawing_wand );
 
-void DrawPathLineToAbsolute( DrawingWand *drawing_wand, const double x, const double y );
+void MagickDrawPathLineToAbsolute( DrawingWand *drawing_wand, const double x, const double y );
 
-void DrawPathLineToRelative( DrawingWand *drawing_wand, const double x, const double y );
+void MagickDrawPathLineToRelative( DrawingWand *drawing_wand, const double x, const double y );
 
-void DrawPathLineToHorizontalAbsolute( DrawingWand *drawing_wand, const PathMode mode,
+void MagickDrawPathLineToHorizontalAbsolute( DrawingWand *drawing_wand, const PathMode mode,
                                        const double x );
 
-void DrawPathLineToHorizontalRelative( DrawingWand *drawing_wand, const double x );
+void MagickDrawPathLineToHorizontalRelative( DrawingWand *drawing_wand, const double x );
 
-void DrawPathLineToVerticalAbsolute( DrawingWand *drawing_wand, const double y );
+void MagickDrawPathLineToVerticalAbsolute( DrawingWand *drawing_wand, const double y );
 
-void DrawPathLineToVerticalRelative( DrawingWand *drawing_wand, const double y );
+void MagickDrawPathLineToVerticalRelative( DrawingWand *drawing_wand, const double y );
 
-void DrawPathMoveToAbsolute( DrawingWand *drawing_wand, const double x, const double y );
+void MagickDrawPathMoveToAbsolute( DrawingWand *drawing_wand, const double x, const double y );
 
-void DrawPathMoveToRelative( DrawingWand *drawing_wand, const double x, const double y );
+void MagickDrawPathMoveToRelative( DrawingWand *drawing_wand, const double x, const double y );
 
-void DrawPathStart( DrawingWand *drawing_wand );
+void MagickDrawPathStart( DrawingWand *drawing_wand );
 
-DrawInfo *DrawPeekGraphicContext( const DrawingWand *drawing_wand );
+DrawInfo *MagickDrawPeekGraphicContext( const DrawingWand *drawing_wand );
 
-void DrawPoint( DrawingWand *drawing_wand, const double x, const double y );
+void MagickDrawPoint( DrawingWand *drawing_wand, const double x, const double y );
 
-void DrawPolygon( DrawingWand *drawing_wand, const unsigned long number_coordinates,
+void MagickDrawPolygon( DrawingWand *drawing_wand, const unsigned long number_coordinates,
                   const PointInfo *coordinates );
 
-void DrawPolyline( DrawingWand *drawing_wand, const unsigned long number_coordinates,
+void MagickDrawPolyline( DrawingWand *drawing_wand, const unsigned long number_coordinates,
                    const PointInfo *coordinates );
 
-void DrawPopClipPath( DrawingWand *drawing_wand );
+void MagickDrawPopClipPath( DrawingWand *drawing_wand );
 
-void DrawPopDefs( DrawingWand *drawing_wand );
+void MagickDrawPopDefs( DrawingWand *drawing_wand );
 
-void DrawPopGraphicContext( DrawingWand *drawing_wand );
+void MagickDrawPopGraphicContext( DrawingWand *drawing_wand );
 
-void DrawPopPattern( DrawingWand *drawing_wand );
+void MagickDrawPopPattern( DrawingWand *drawing_wand );
 
-void DrawPushClipPath( DrawingWand *drawing_wand, const char *clip_path_id );
+void MagickDrawPushClipPath( DrawingWand *drawing_wand, const char *clip_path_id );
 
-void DrawPushDefs( DrawingWand *drawing_wand );
+void MagickDrawPushDefs( DrawingWand *drawing_wand );
 
-void DrawPushGraphicContext( DrawingWand *drawing_wand );
+void MagickDrawPushGraphicContext( DrawingWand *drawing_wand );
 
-void DrawPushPattern( DrawingWand *drawing_wand, const char *pattern_id, const double x,
+void MagickDrawPushPattern( DrawingWand *drawing_wand, const char *pattern_id, const double x,
                       const double y, const double width, const double height );
 
-void DrawRectangle( DrawingWand *drawing_wand, const double x1, const double y1,
+void MagickDrawRectangle( DrawingWand *drawing_wand, const double x1, const double y1,
                     const double x2, const double y2 );
 
-unsigned int DrawRender( const DrawingWand *drawing_wand );
+unsigned int MagickDrawRender( const DrawingWand *drawing_wand );
 
-void DrawRotate( DrawingWand *drawing_wand, const double degrees );
+void MagickDrawRotate( DrawingWand *drawing_wand, const double degrees );
 
-void DrawRoundRectangle( DrawingWand *drawing_wand, double x1, double y1, double x2, double y2,
+void MagickDrawRoundRectangle( DrawingWand *drawing_wand, double x1, double y1, double x2, double y2,
                          double rx, double ry );
 
-void DrawScale( DrawingWand *drawing_wand, const double x, const double y );
+void MagickDrawScale( DrawingWand *drawing_wand, const double x, const double y );
 
-void DrawSkewX( DrawingWand *drawing_wand, const double degrees );
+void MagickDrawSkewX( DrawingWand *drawing_wand, const double degrees );
 
-void DrawSkewY( DrawingWand *drawing_wand, const double degrees );
+void MagickDrawSkewY( DrawingWand *drawing_wand, const double degrees );
 
-void DrawSetStopColor( DrawingWand *drawing_wand, const PixelPacket *stop_color,
+void MagickDrawSetStopColor( DrawingWand *drawing_wand, const PixelPacket *stop_color,
                        const double offset );
 
-void DrawGetStrokeColor( const DrawingWand *drawing_wand );
+void MagickDrawGetStrokeColor( const DrawingWand *drawing_wand );
 
-void DrawSetStrokeColor( DrawingWand *drawing_wand, const PixelWand *stroke_wand );
+void MagickDrawSetStrokeColor( DrawingWand *drawing_wand, const PixelWand *stroke_wand );
 
-void DrawSetStrokePatternURL( DrawingWand *drawing_wand, const char *stroke_url );
+void MagickDrawSetStrokePatternURL( DrawingWand *drawing_wand, const char *stroke_url );
 
-unsigned int DrawGetStrokeAntialias( const DrawingWand *drawing_wand );
+unsigned int MagickDrawGetStrokeAntialias( const DrawingWand *drawing_wand );
 
-void DrawSetStrokeAntialias( DrawingWand *drawing_wand,
+void MagickDrawSetStrokeAntialias( DrawingWand *drawing_wand,
                              const unsigned int stroke_antialias );
 
-double *DrawGetStrokeDashArray( const DrawingWand *drawing_wand,
+double *MagickDrawGetStrokeDashArray( const DrawingWand *drawing_wand,
                                 unsigned long *number_elements );
 
-void DrawSetStrokeDashArray( DrawingWand *drawing_wand, const unsigned long number_elements,
+void MagickDrawSetStrokeDashArray( DrawingWand *drawing_wand, const unsigned long number_elements,
                              const double *dash_array );
 
-double DrawGetStrokeDashOffset( const DrawingWand *drawing_wand );
+double MagickDrawGetStrokeDashOffset( const DrawingWand *drawing_wand );
 
-void DrawSetStrokeDashOffset( DrawingWand *drawing_wand, const double dash_offset );
+void MagickDrawSetStrokeDashOffset( DrawingWand *drawing_wand, const double dash_offset );
 
-LineCap DrawGetStrokeLineCap( const DrawingWand *drawing_wand );
+LineCap MagickDrawGetStrokeLineCap( const DrawingWand *drawing_wand );
 
-void DrawSetStrokeLineCap( DrawingWand *drawing_wand, const LineCap linecap );
+void MagickDrawSetStrokeLineCap( DrawingWand *drawing_wand, const LineCap linecap );
 
-LineJoin DrawGetStrokeLineJoin( const DrawingWand *drawing_wand );
+LineJoin MagickDrawGetStrokeLineJoin( const DrawingWand *drawing_wand );
 
-void DrawSetStrokeLineJoin( DrawingWand *drawing_wand, const LineJoin linejoin );
+void MagickDrawSetStrokeLineJoin( DrawingWand *drawing_wand, const LineJoin linejoin );
 
-unsigned long DrawGetStrokeMiterLimit( const DrawingWand *drawing_wand );
+unsigned long MagickDrawGetStrokeMiterLimit( const DrawingWand *drawing_wand );
 
-void DrawSetStrokeMiterLimit( DrawingWand *drawing_wand, const unsigned long miterlimit );
+void MagickDrawSetStrokeMiterLimit( DrawingWand *drawing_wand, const unsigned long miterlimit );
 
-double DrawGetStrokeOpacity( const DrawingWand *drawing_wand );
+double MagickDrawGetStrokeOpacity( const DrawingWand *drawing_wand );
 
-void DrawSetStrokeOpacity( DrawingWand *drawing_wand, const double stroke_opacity );
+void MagickDrawSetStrokeOpacity( DrawingWand *drawing_wand, const double stroke_opacity );
 
-double DrawGetStrokeWidth( const DrawingWand *drawing_wand );
+double MagickDrawGetStrokeWidth( const DrawingWand *drawing_wand );
 
-void DrawSetStrokeWidth( DrawingWand *drawing_wand, const double stroke_width );
+void MagickDrawSetStrokeWidth( DrawingWand *drawing_wand, const double stroke_width );
 
-unsigned int DrawGetTextAntialias( const DrawingWand *drawing_wand );
+unsigned int MagickDrawGetTextAntialias( const DrawingWand *drawing_wand );
 
-void DrawSetTextAntialias( DrawingWand *drawing_wand, const unsigned int text_antialias );
+void MagickDrawSetTextAntialias( DrawingWand *drawing_wand, const unsigned int text_antialias );
 
-DecorationType DrawGetTextDecoration( DrawingWand *drawing_wand );
+DecorationType MagickDrawGetTextDecoration( DrawingWand *drawing_wand );
 
-void DrawSetTextDecoration( DrawingWand *drawing_wand, const DecorationType decoration );
+void MagickDrawSetTextDecoration( DrawingWand *drawing_wand, const DecorationType decoration );
 
-char *DrawGetTextEncoding( const DrawingWand *drawing_wand );
+char *MagickDrawGetTextEncoding( const DrawingWand *drawing_wand );
 
-void DrawSetTextEncoding( DrawingWand *drawing_wand, const char *encoding );
+void MagickDrawSetTextEncoding( DrawingWand *drawing_wand, const char *encoding );
 
-void DrawGetTextUnderColor( const DrawingWand *drawing_wand, PixelWand *under_color );
+void MagickDrawGetTextUnderColor( const DrawingWand *drawing_wand, PixelWand *under_color );
 
-void DrawSetTextUnderColor( DrawingWand *drawing_wand, const PixelWand *under_wand );
+void MagickDrawSetTextUnderColor( DrawingWand *drawing_wand, const PixelWand *under_wand );
 
-void DrawTranslate( DrawingWand *drawing_wand, const double x, const double y );
+void MagickDrawTranslate( DrawingWand *drawing_wand, const double x, const double y );
 
-void DrawSetViewbox( DrawingWand *drawing_wand, unsigned long x1, unsigned long y1,
+void MagickDrawSetViewbox( DrawingWand *drawing_wand, unsigned long x1, unsigned long y1,
                      unsigned long x2, unsigned long y2 );
 
 
@@ -1318,11 +1315,11 @@ void DrawSetViewbox( DrawingWand *drawing_wand, unsigned long x1, unsigned long 
 
 PixelWand *NewPixelWand();
 
-PixelWand *NewPixelWands( const unsigned long number_wands );
+PixelWand **NewPixelWands( const unsigned long number_wands );
 
 PixelWand *ClonePixelWand( const PixelWand *wand );
 
-PixelWand *ClonePixelWands( const PixelWand *wands, const unsigned long number_wands );
+PixelWand **ClonePixelWands( const PixelWand *wands, const unsigned long number_wands );
 
 unsigned int DestroyPixelWand( PixelWand *wand );
 
