@@ -1,10 +1,11 @@
 # https://hub.docker.com/r/openresty/openresty/tags
-# 1.19.9.1-2-buster buster-fat alpine 
-FROM openresty/openresty:1.19.9.1-10-buster-fat
+FROM openresty/openresty:1.19.9.1-12-alpine
 
-RUN apt update && apt install --no-install-recommends -y inotify-tools &&\
+RUN sed -i "s|v3.15|edge|g" /etc/apk/repositories &&\
+    apk update && apk add --no-cache inotify-tools graphicsmagick-dev &&\
     rm -rf /tmp/* /var/tmp/* /var/lib/apt/lists/*
 
-ADD ["*.sh", "/"]
-ADD nginx.conf  /usr/local/openresty/nginx/conf/nginx.conf
-CMD ["/auto-reload-1.sh"]
+COPY gmwand/*   /usr/local/openresty/lualib/gmwand/
+COPY nginx.conf /usr/local/openresty/nginx/conf/nginx.conf
+ADD  ["*.sh", "/cmd/"]
+CMD  ["/cmd/auto-reload-1.sh"]
