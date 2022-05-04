@@ -53,17 +53,16 @@ local function get_draw_wand(kv)
     -- lib.PixelSetColor(p_wand, kv['color'] or "grey75") -- #BEBEBE
     local d_wand = ffi.gc(lib.MagickNewDrawingWand(), lib.MagickDestroyDrawingWand)
 
-    lib.MagickDrawSetFillOpacity(d_wand, kv['t'] or 0.5)
+    lib.MagickDrawSetFillOpacity(d_wand, kv['t'] or 0.5) -- opactity
     lib.MagickDrawSetFillColor(d_wand, p_wand) -- fill coler
     lib.MagickDrawSetFont(d_wand, font_names[kv['type']] or 'Arial') -- 'Arial' or font_names['sarasa']
-    lib.MagickDrawSetFontSize(d_wand, kv['size'] or 30) -- size
+    lib.MagickDrawSetFontSize(d_wand, kv['size'] or 40) -- size
 
     -- lib.MagickDrawRotate(d_wand, kv['rotate'] or 0) -- rotate
     -- g -> gravity ----------------------------------------------
     local x, y, r = kv['voffset'] or kv['x'] or 0, kv['y'] or 0, kv['rotate'] or 0
     if kv['fill'] == 1 then
-        -- fill tile                       -- kv[x],kv[y]无效
-        x = padding
+        x = padding -- fill tile kv[x],kv[y]无效
         y = padding / 2 + lib.MagickDrawGetFontSize(d_wand)
         lib.MagickDrawSetGravity(d_wand, lib.NorthWestGravity)
     elseif kv['g'] == 'nw' then
@@ -97,11 +96,11 @@ local function get_draw_wand(kv)
         x = x + padding
         y = y + padding * 2
     else 
-        -- default                       -- kv[x],kv[y]无效
+        -- default -- kv[x],kv[y]无效
         lib.MagickDrawSetGravity(d_wand, lib.CenterGravity)
     end
     -- lib.MagickDrawAnnotation(d_wand, x, y, kv['text'])
-    lib.MagickDrawRotate(d_wand, r)
+    -- lib.MagickDrawRotate(d_wand, r)
     return d_wand, x, y, r
 end
 
