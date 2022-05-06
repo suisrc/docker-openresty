@@ -5,6 +5,7 @@ RUN sed -i "s|v3.15|edge|g" /etc/apk/repositories &&\
     apk update && apk add --no-cache inotify-tools graphicsmagick-dev &&\
     rm -rf /tmp/* /var/tmp/* /var/lib/apt/lists/*
 
+#COPY process/*  /etc/nginx/conf.d/
 COPY gmwand/*   /usr/local/openresty/lualib/gmwand/
 COPY nginx.conf /usr/local/openresty/nginx/conf/nginx.conf
 ADD  ["*.sh", "/cmd/"]

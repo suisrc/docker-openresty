@@ -15,20 +15,22 @@ local function file_exists(name)
     if f ~= nil then io.close(f) return true else return false end
 end
 
---拆分字符串
---image/resize,w_500,h_500,m_fill
+-- 拆分字符串， kv[1] = method
+-- resize,w_500,h_500,m_fill/watermark,t_15,rotate_30,text_5byg5LiJMjH
 local function split_param(s)
-    local kv = {}
-    string.gsub(s,'[^,]+',function(w1)
-        local vs= {}
-        string.gsub(w1,'[^_]+', function(w2)
-            table.insert(vs,w2)
+    local kvs = {}
+    string.gsub(s,"[^/]+",function(s0)
+        local kv={}
+        string.gsub(s0,'[^,]+',function(s1)
+            if not kv[1] then kv[1] = s1 -- method, ps: resize, watermark
+            else local vs= {}            -- params, ps: w_500,h_500,m_fill
+                string.gsub(s1,'[^_]+', function(s2) table.insert(vs,s2) end)
+                if #vs == 2 then kv[vs[1]] = vs[2] end
+            end
         end)
-        if #vs == 2 then
-            kv[vs[1]] = vs[2]
-        end
+        table.insert(kvs,kv)
     end)
-    return kv
+    return kvs
 end
 
 -- 读取文件

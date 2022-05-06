@@ -1,4 +1,4 @@
--- Image
+-- Magick
 local ffi = require "ffi"
 local lib = require "gmwand.lib"
 local fun = require "gmwand.fun"

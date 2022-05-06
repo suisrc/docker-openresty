@@ -1051,7 +1051,7 @@ void MagickDrawAnnotation( DrawingWand *drawing_wand, const double x, const doub
 
 void MagickDrawAffine( DrawingWand *drawing_wand, const AffineMatrix *affine );
 
-DrawingWand MagickDrawAllocateWand( const DrawInfo *draw_info, ImageInfo *image );
+DrawingWand *MagickDrawAllocateWand( const DrawInfo *draw_info, ImageInfo *image );
 
 void MagickDrawArc( DrawingWand *drawing_wand, const double sx, const double sy, const double ex,
               const double ey, const double sd, const double ed );
