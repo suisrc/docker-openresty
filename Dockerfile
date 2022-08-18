@@ -25,6 +25,7 @@ ENV LUA_SYSLOG_HOST=\
     NGX_AUTHZ_PORT=12006 \
     NGX_PROXYP_PORT=12011 \
     NGX_PROXYH_PORT=12012 \
+    NGX_PROXYK_PORT=12013 \
     NGX_KIN_HTTP=http \
     NGX_CAS_HOST=end-iam-cas-svc \
     NGX_KIN_HOST=end-iam-kin-svc \
