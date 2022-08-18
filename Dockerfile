@@ -17,11 +17,9 @@ RUN DEBIAN_FRONTEND=noninteractive apt update \
     && rm -rf /var/lib/apt/lists/*
 
 RUN wget https://github.com/chobits/ngx_http_proxy_connect_module/archive/refs/tags/v0.0.3.tar.gz \
-    -O ngx_hpc_module.tar.gz && tar -xzf ngx_hpc_module.tar.gz &&
-
-    wget https://openresty.org/download/openresty-${REST_VERSION}.tar.gz && 
-    tar -zxf openresty-${REST_VERSION}.tar.gz && cd openresty-${REST_VERSION} &&
-
+    -O ngx_hpc_module.tar.gz && tar -xzf ngx_hpc_module.tar.gz && \
+    wget https://openresty.org/download/openresty-${REST_VERSION}.tar.gz && \
+    tar -zxf openresty-${REST_VERSION}.tar.gz && cd openresty-${REST_VERSION} && \
     ./configure \
       --with-cc-opt="-I/usr/local/opt/openssl/include/ -I/usr/local/opt/pcre/include/" \
       --with-ld-opt="-L/usr/local/opt/openssl/lib/ -L/usr/local/opt/pcre/lib/" \
@@ -44,8 +42,8 @@ RUN wget https://github.com/chobits/ngx_http_proxy_connect_module/archive/refs/t
       --with-http_flv_module \
       --with-http_mp4_module \
       --with-http_gunzip_module \
-      --add-module=../ngx_http_proxy_connect_module-0.0.3 &&
-    patch -d build/nginx-${REST_VERSION_M}/ -p 1 < ../ngx_http_proxy_connect_module-0.0.3/patch/proxy_connect_rewrite_102101.patch &&
+      --add-module=../ngx_http_proxy_connect_module-0.0.3 && \
+    patch -d build/nginx-${REST_VERSION_M}/ -p 1 < ../ngx_http_proxy_connect_module-0.0.3/patch/proxy_connect_rewrite_102101.patch && \
     make && make install
 
 # build runner
