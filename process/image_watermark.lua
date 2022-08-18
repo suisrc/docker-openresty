@@ -21,6 +21,7 @@
 -- O: 指定图片载入方式，默认：Multiply(乘积), Dissolve(融合), Copy(覆盖)...
 
 -- graphicsmagick
+local b64 = require("ngx.base64")
 local ffi = require "ffi"
 local gmw = require "gmwand"
 local lib = gmw.lib
@@ -46,7 +47,8 @@ local function fix_params(kv)
         end
     end
 
-    if (kv['text']) then kv['text'] = ngx.decode_base64(kv['text']) end
+    -- if (kv['text']) then kv['text'] = ngx.decode_base64(kv['text']) end
+    if (kv['text']) then kv['text'] = b64.decode_base64url(kv['text']) end
     if (kv['t']) then kv['t'] = tonumber(kv['t']) / 100.0 end
     if (kv['x']) then kv['x'] = tonumber(kv['x']) end
     if (kv['y']) then kv['y'] = tonumber(kv['y']) end
@@ -55,7 +57,7 @@ local function fix_params(kv)
     if (kv['shadow']) then kv['shadow'] = tonumber(kv['shadow']) / 100 end -- 未使用水印阴影
     if (kv['rotate']) then kv['rotate'] = tonumber(kv['rotate']) end
     if (kv['fill']) then kv['fill'] = tonumber(kv['fill']) end
-    if (kv['type']) then kv['type'] = ngx.decode_base64(kv['type']) end
+    if (kv['type']) then kv['type'] = b64.decode_base64url(kv['type']) end
     if (kv['color']) then kv['color'] = '#'..kv['color'] end
     if (kv['fill']) then kv['fill'] = tonumber(kv['fill']) end
     if (kv['P']) then kv['P'] = tonumber(kv['P']) end
@@ -73,7 +75,7 @@ local function get_draw_wand(kv)
     -- lib.PixelSetColor(p_wand, kv['color'] or "grey75") -- #BEBEBE
     lib.MagickDrawSetFillColor(d_wand, p_wand) -- fill coler
 
-    lib.MagickDrawSetFont(d_wand, font_names[kv['type']] or 'Arial') -- 'Arial' or font_names['sarasa']
+    lib.MagickDrawSetFont(d_wand, font_names[kv['type'] or 'Arial']) -- 'Arial' or font_names['sarasa']
     lib.MagickDrawSetFontSize(d_wand, kv['size'] or 40) -- size
 
     -- lib.MagickDrawRotate(d_wand, kv['rotate'] or 0) -- rotate

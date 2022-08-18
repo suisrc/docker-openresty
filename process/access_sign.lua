@@ -54,10 +54,11 @@ local function sign_check(params,secret)
 
     --将salt添加到最后，计算正确的签名sign值并与传入的sign签名对比
     local sign_str = ngx.var.uri .. "?" .. table.concat(tmp, "&") .. "&"
+    -- ngx.log(ngx.ERR, sign_str)
     local sign1 = ngx.md5(sign_str..secret)
     if sign0 ~= sign1 then
         --若是签名错误返回错误信息并记录日志
-        local mess="签名错误: sign_0="..sign0..", sign_1="..sign1.."; sign_str="..sign_str.."{secret}"
+        local mess="签名错误: sign_0="..sign0..", sign_1="..sign1.."; sign_str="..sign_str.."{secret};"
         ngx.log(ngx.ERR, mess)
         return false,mess
         -- return false,"签名错误"
@@ -68,6 +69,9 @@ end
 if ngx.var.uri == '/favicon.ico' then
 	return
 end
+-- if ngx.var.uri == '/oss/config/xxxxx' then
+-- 	return
+-- end
 
 local params = {}
 
