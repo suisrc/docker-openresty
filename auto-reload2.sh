@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 if [ $KS_WATCHDOG ]; then ## 看门狗模式
     vars=""
