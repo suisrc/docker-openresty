@@ -22,7 +22,8 @@ if [ $KS_WATCHDOG ]; then ## 看门狗模式
         echo "envsubst /etc/nginx/kg/proxyh.conf"
     fi
 fi
-openresty -g "daemon off;" &
+
+nginx -g "daemon off;" &
 inotifywait -e modify,move,create,delete -mr --timefmt '%d/%m/%y %H:%M' --format '%T' /etc/nginx/conf.d/ | while read date time; do
     echo "At ${time} on ${date}, config file update detected."
     nginx -s reload
