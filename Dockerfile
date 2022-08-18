@@ -5,8 +5,8 @@ FROM debian:bullseye-slim as builder
 ARG REST_VERSION_M=1.21.4
 ARG REST_VERSION=${REST_VERSION_M}.1
 
-RUN DEBIAN_FRONTEND=noninteractive apt update && 
-    apt install -y --no-install-recommends \
+RUN DEBIAN_FRONTEND=noninteractive apt update \
+    && apt install -y --no-install-recommends \
       build-essential \
       libreadline-dev \
       libssl-dev \
