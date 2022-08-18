@@ -1,7 +1,8 @@
 # https://hub.docker.com/r/openresty/openresty/tags
 # FROM openresty/openresty:1.21.4.1-alpine-amd64
-#FROM openresty/openresty:1.21.4.1-buster-fat-amd64
-FROM openresty/openresty:1.21.4.1-3-bullseye-fat-amd64
+# FROM openresty/openresty:1.21.4.1-buster-fat-amd64
+# FROM openresty/openresty:1.21.4.1-3-bullseye-fat-amd64
+FROM suisrc/openresty:1.21.4.1-hp-1
 
 LABEL maintainer="suisrc@outlook.com"
 
@@ -43,4 +44,4 @@ COPY nginx/nginx.conf /etc/nginx/az/nginx.conf
 
 # 部署启动文件
 ADD  ["*.sh", "/cmd/"]
-CMD  ["/cmd/auto-reload1.sh"]
+CMD  ["/cmd/auto-reload2.sh"]
