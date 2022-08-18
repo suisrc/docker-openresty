@@ -1,5 +1,5 @@
 # https://hub.docker.com/r/openresty/openresty/tags
-FROM openresty/openresty:1.19.9.1-12-alpine
+FROM openresty/openresty:1.21.4.1-3-alpine-amd64
 
 RUN sed -i "s|v3.15|edge|g" /etc/apk/repositories &&\
     apk update && apk add --no-cache inotify-tools graphicsmagick-dev &&\
