@@ -12,6 +12,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt update \
       libssl-dev \
       libpcre3-dev \
       libperl-dev \
+      zlib1g-dev \
       ca-certificates \
       openssl libpcre3 perl \
       make curl wget patch \
