@@ -1,0 +1,16 @@
+map $ssl_preread_protocol $upstream {
+    ""            127.0.0.1:12032;
+    "TLSv1.0"     127.0.0.1:12033;
+    "TLSv1.1"     127.0.0.1:12033;
+    "TLSv1.2"     127.0.0.1:12033;
+    "TLSv1.3"     127.0.0.1:12033;
+    "TLSv1.4"     127.0.0.1:12033;
+    default       127.0.0.1:12032;
+}
+
+server {
+    listen            127.0.0.1:83;
+    proxy_pass        $upstream;
+    ssl_preread       on;
+    proxy_timeout     65s; 
+}
