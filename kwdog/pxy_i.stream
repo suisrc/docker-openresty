@@ -10,7 +10,7 @@ map $ssl_preread_protocol $upstream {
 }
 
 server {
-    listen            ${NGX_PROXYK_PORT};
+    listen            ${NGX_PXY_I_PORT};
     proxy_pass        $upstream;
     ssl_preread       on;
     proxy_timeout     65s; 

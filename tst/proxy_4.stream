@@ -9,8 +9,8 @@ map $ssl_preread_protocol $upstream {
 }
 
 server {
-    listen            127.0.0.1:83;
-    proxy_pass        $upstream;
+    listen            83;
     ssl_preread       on;
-    proxy_timeout     65s; 
+    proxy_timeout     65s;
+    proxy_pass        $upstream;
 }
