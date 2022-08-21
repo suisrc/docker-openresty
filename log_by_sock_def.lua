@@ -1,8 +1,12 @@
--- 移除了用户信息部分内容
-
 -- log_by_lua
+if logger_disable == nil then logger_disable = os.getenv("LUA_SYSLOG_TYPE") == "disable" end
+if logger_disable then return end
+
+-- 移除了用户信息部分内容
 local cjson = require "cjson"
 local logger = require "resty.socket.logger"
+
+
 if not logger.initted() then
     local ok, err = logger.init{
         host      = os.getenv("LUA_SYSLOG_HOST") or "127.0.0.1",

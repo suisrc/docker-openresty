@@ -1,6 +1,10 @@
 -- body_filter_by_lua
 -- https://github.com/openresty/lua-nginx-module/issues/1092
 
+-- body采集主要是给日志系统提供数据，如果禁用日志系统，则不记录body
+if logger_disable == nil then logger_disable = os.getenv("LUA_SYSLOG_TYPE") == "disable" end
+if logger_disable then return end
+
 if ngx.is_subrequest then
     local chunk, eof = ngx.arg[1], ngx.arg[2]
     if eof then

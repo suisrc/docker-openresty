@@ -1,4 +1,7 @@
 -- log_by_lua
+if logger_disable == nil then logger_disable = os.getenv("LUA_SYSLOG_TYPE") == "disable" end
+if logger_disable then return end
+
 local cjson = require "cjson"
 local logger = require "resty.socket.logger"
 if not logger.initted() then
