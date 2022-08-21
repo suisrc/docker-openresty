@@ -18,8 +18,8 @@ https://github.com/cloudflare/lua-resty-logger-socket
 
 ### lua_resty_socket_http模块
 
- https://github.com/suisrc/lua-resty-http (✔)  
- https://github.com/ledgetech/lua-resty-http  
+https://github.com/suisrc/lua-resty-http (✔)  
+https://github.com/ledgetech/lua-resty-http  
 
- 用户解决远程访问，虽然ngx.location.capture提供子调用，但是这只限于内部接口调用，  
- PS： "resty.http", 更改为 "resty.socket.http"
+用户解决远程访问，虽然ngx.location.capture提供子调用，但是这只限于内部接口调用，  
+PS： "resty.http", 更改为 "resty.socket.http"
