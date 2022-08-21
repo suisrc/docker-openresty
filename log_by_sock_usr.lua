@@ -1,6 +1,6 @@
 -- log_by_lua
 local cjson = require "cjson"
-local logger = require "resty.logger.socket"
+local logger = require "resty.socket.logger"
 if not logger.initted() then
     local ok, err = logger.init{
         host      = os.getenv("LUA_SYSLOG_HOST") or "127.0.0.1",

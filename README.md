@@ -32,6 +32,8 @@ EOF
 cat /etc/yum.repos.d/openresty.repo
 yum -y install openresty
 
+yum install libyaml
+yum install postgresql-libs
 ## /etc/hosts
 curl http://end-iam-kin-svc.dev-fmes.svc/authx
 curl http://end-iam-kin-svc.dev-fmes.svc.logs-pxy.default.svc/authx
@@ -53,3 +55,10 @@ curl http://127.0.0.1:82/internal.end-iam-kin-svc.dev-fmes.svc/api/iam/v1/authx
 
 
 kratos watchdog => kwdog 看门狗
+
+
+###
+
+curl http://10.103.93.57/api/ssl/v1/ca/txt?key=tst > /etc/ssl/certs/ca-fake-tst.crt
+
+curl http://10.103.93.57/api/ssl/v1/ca/txt?key=tst > ca-fake-tst.crt

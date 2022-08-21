@@ -41,7 +41,6 @@ ADD  ["kwdog/*", "/etc/nginx/kg/"]
 
 # 部署默认配置
 COPY nginx/nginx.conf /usr/local/openresty/nginx/conf/nginx.conf
-COPY nginx/socket.lua /usr/local/openresty/lualib/resty/logger/socket.lua
 COPY nginx/nginx.conf /etc/nginx/az/nginx.conf
 
 # 部署启动文件
