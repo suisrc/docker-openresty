@@ -2,7 +2,7 @@
 # FROM openresty/openresty:1.21.4.1-alpine-amd64
 # FROM openresty/openresty:1.21.4.1-buster-fat-amd64
 # FROM openresty/openresty:1.21.4.1-3-bullseye-fat-amd64
-FROM suisrc/openresty:1.21.4.1-hp-1
+FROM suisrc/openresty:1.21.4.1-hp-2
 
 LABEL maintainer="suisrc@outlook.com"
 
