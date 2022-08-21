@@ -28,7 +28,7 @@ if [ $KS_WATCHDOG ]; then
     if [[ $KS_WATCHDOG =~ 'pxy_a' ]]; then ## all_proxy代理
         envsubst  "$vars" < /etc/nginx/kg/pxy_a.conf > /etc/nginx/conf.d/pxy_a.conf
         echo "envsubst /etc/nginx/kg/pxy_a.conf"
-        if [ ! $LUA_NGX_SSL_CACHE ]; then ## 虚假证书需要共享缓存
+        if [[ ! $LUA_NGX_SSL_CACHE ]]; then ## 虚假证书需要共享缓存
             export LUA_NGX_SSL_CACHE='lua_shared_dict ssl_cache      10m;'
         fi
     fi
@@ -36,7 +36,7 @@ if [ $KS_WATCHDOG ]; then
         envsubst  "$vars" < /etc/nginx/kg/pxy_i.conf   > /etc/nginx/conf.d/pxy_i.conf
         envsubst  "$vars" < /etc/nginx/kg/pxy_i.stream > /etc/nginx/conf.d/pxy_i.stream
         echo "envsubst /etc/nginx/kg/pxy_i.conf"
-        if [ ! $LUA_NGX_SSL_CACHE ]; then ## 虚假证书需要共享缓存
+        if [[ ! $LUA_NGX_SSL_CACHE ]]; then ## 虚假证书需要共享缓存
             export LUA_NGX_SSL_CACHE='lua_shared_dict ssl_cache      10m;'
         fi
     fi
