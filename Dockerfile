@@ -18,6 +18,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt update \
       make curl wget patch \
     && rm -rf /var/lib/apt/lists/*
 
+# 构建openresty
 RUN wget https://github.com/chobits/ngx_http_proxy_connect_module/archive/refs/tags/v0.0.3.tar.gz \
     -O ngx_hpc_module.tar.gz && tar -xzf ngx_hpc_module.tar.gz && \
     wget https://openresty.org/download/openresty-${REST_VERSION}.tar.gz && \
@@ -47,6 +48,16 @@ RUN wget https://github.com/chobits/ngx_http_proxy_connect_module/archive/refs/t
       --add-module=../ngx_http_proxy_connect_module-0.0.3 && \
     patch -d build/nginx-${REST_VERSION_M}/ -p 1 < ../ngx_http_proxy_connect_module-0.0.3/patch/proxy_connect_rewrite_102101.patch && \
     make && make install
+
+# 安装lua_resty_socket_logger,lua_resty_socket_http模块
+RUN mkdir /usr/local/openresty/lualib/resty/socket && \
+    wget https://github.com/suisrc/lua-resty-logger-socket/archive/refs/tags/v0.0.1.tar.gz \
+        -O lua_logger.tar.gz && tar -xzf lua_logger.tar.gz && \
+        cp lua-resty-logger-socket-0.0.1/lib/resty/logger/socket.lua /usr/local/openresty/lualib/resty/socket/logger.lua &&\
+    wget https://github.com/suisrc/lua-resty-http/archive/refs/tags/v0.17.0.tar.gz \
+        -O lua_http_req.tar.gz && tar -xzf lua_http_req.tar.gz && \
+        cp lua-resty-http-0.17.0/lib/resty/* /usr/local/openresty/lualib/resty/socket/ &&\
+        sed -i -e 's/"resty./"resty.socket./g'  /usr/local/openresty/lualib/resty/socket/http.lua &&\
 
 # build runner
 FROM debian:bullseye-slim as runner
