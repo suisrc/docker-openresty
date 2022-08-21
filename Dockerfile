@@ -57,7 +57,7 @@ RUN mkdir /usr/local/openresty/lualib/resty/socket && \
     wget https://github.com/suisrc/lua-resty-http/archive/refs/tags/v0.17.0.tar.gz \
         -O lua_http_req.tar.gz && tar -xzf lua_http_req.tar.gz && \
         cp lua-resty-http-0.17.0/lib/resty/* /usr/local/openresty/lualib/resty/socket/ &&\
-        sed -i -e 's/"resty./"resty.socket./g'  /usr/local/openresty/lualib/resty/socket/http.lua &&\
+        sed -i -e 's/"resty./"resty.socket./g'  /usr/local/openresty/lualib/resty/socket/http.lua
 
 # build runner
 FROM debian:bullseye-slim as runner
