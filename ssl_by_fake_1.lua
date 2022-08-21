@@ -1,4 +1,5 @@
 -- 动态构建虚假证书
+if fakessl_uri == nil then fakessl_uri = os.getenv("LUA_FAKESSL_URI") or false end
 
 local cjson = require "cjson"
 local ssl = require "ngx.ssl"
@@ -12,10 +13,12 @@ local cache = ngx.shared.ssl_cache
 
 -- create_pem_cert_pkey_data 获取证书数据
 local function create_pem_cert_pkey_data()
-    local LUA_FAKESSL_URI = "http://10.103.93.57/api/ssl/v1/cert?token=Ckt1YmVybmV0ZXM&key=tst&profile=&kind=1&cn=dev01&domain=%s"
-
+    if fakessl_uri == false then
+        ngx.log(ngx.ERR, "LUA_FAKESSL_URI is not set")
+        return
+    end
     local host, _  = ssl.server_name()
-    local fkuri = string.format(LUA_FAKESSL_URI, host)
+    local fkuri = string.format(fakessl_uri, host)
     local httpc = http.new()
     local res, err = httpc:request_uri(fkuri)
     if not res then
@@ -73,7 +76,7 @@ local data = {
 if not data.cert then
     data = create_pem_cert_pkey_data()
 end
-if not data.cert then
+if not data or not data.cert then
     -- 没有可用的证书数据，直接结束请求
     ngx.exit(ngx.ERROR) -- 返回错误码
 end

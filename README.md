@@ -27,8 +27,10 @@ LOG_AUTHZ_HANDLER; 默认，/etc/nginx/az/log_by_sock_usr.lua
 LUA_NGX_SSL_CACHE; 默认,没有, 如果强制开启pxy_i or pxy_a, 自动配置为10m，如果使用pxy_i, pxy_a, 需要指定
 NGX_HTTP_CONF;   http,   自定义配置
 NGX_STREAM_CONF; stream, 自定义配置
+LUA_FAKESSL_URI; http://10.103.93.57/api/ssl/v1/cert?token=Ckt1YmVybmV0ZXM&key=tst&profile=&kind=1&cn=dev01&domain=%s
 
 PS: 默认系统禁用日志, LUA_SYSLOG_TYPE=udp， 进出流量监控
+    LUA_FAKESSL_URI,参数中有且仅有一个“%s”的参数用于接受域名参数
 
 ### test
 
