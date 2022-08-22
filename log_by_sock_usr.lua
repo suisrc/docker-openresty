@@ -85,7 +85,7 @@ msg.reqTime = ngx.var.request_time or ""
 -- msg.reqTime = ngx.now() - msg.startTime
 -- 服务
 msg.tags = ngx.var.proxy_tags or ""
-msg.serviceName = ngx.var.proxy_host or ngx.ctx.sub_proxy_host or ""
+msg.serviceName = ngx.var.proxy_http_host or ngx.var.proxy_host or ngx.ctx.sub_proxy_host or ""
 msg.serviceAddr = ngx.var.upstream_addr or ngx.ctx.sub_upstream_addr or ""
 msg.serviceAuth = ngx.ctx.sub_proxy_host or ""
 
