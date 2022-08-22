@@ -9,17 +9,17 @@ if [ $KS_WATCHDOG ]; then
         export LUA_NGX_SSL_CACHE="lua_shared_dict ssl_cache      ${LUA_NGX_SSL_CACHE};"
     fi
     ## DNS服务器
-    if [[ ! $NGX_RESOLVRE ]] {
+    if [[ ! $NGX_RESOLVRE ]]; then
         export NGX_RESOLVRE=`cat /etc/resolv.conf | grep "nameserver" | awk '{print $2}' | tr '\n' ' '`
-    }
+    fi
     ## 局域网域名
-    if [[ ! $LUA_PROXY_LAN_M ]] {
+    if [[ ! $LUA_PROXY_LAN_M ]] then
         export LUA_PROXY_LAN_M=`cat /etc/resolv.conf | grep "search" | awk '{print $2}'`
-    }
+    fi
     ## LUA需要的系统环境变量
-    if [[ ! $LUA_NGX_ENV_PAS ]] {
+    if [[ ! $LUA_NGX_ENV_PAS ]] then
         export LUA_NGX_ENV_PAS="env LUA_SYSLOG_HOST;env LUA_SYSLOG_TYPE;env LUA_FAKESSL_URI;env LUA_PROXY_LAN_M;"
-    }
+    fi
     ##################################################################################
     if [[ $KS_WATCHDOG =~ 'inlog' ]]; then ## 登录鉴权
         envsubst  "$vars" < /etc/nginx/kg/inlog.conf > /etc/nginx/conf.d/inlog.conf
