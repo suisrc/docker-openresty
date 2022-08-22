@@ -6,13 +6,13 @@ kratos watchdog => kwdog 看门狗
 NGX_MASTER_PROC; 默认, on, off: 单线程模式 
 NGX_WORKER_CONNS; 默认, 4096， # 单实例服务进程，无需太多线程 2x4096即可
 NGX_WORKER_COUNT; 默认, 2， # 可以适当缩小，用户保护业务应用的并发清空
-KS_WATCHDOG; 默认, 关闭 看门狗模式， KS_WATCHDOG=authx,authz,pxy_p,pxy_h,pxy_i,pxy_a
+KS_WATCHDOG; 默认, 关闭 看门狗模式， KS_WATCHDOG=inlog,authz,pxy_p,pxy_h,pxy_i,pxy_a
 LUA_SYSLOG_HOST; 默认, 127.0.0.1 日志地址
 LUA_SYSLOG_PORT; 默认, 5144      日志端口
 LUA_SYSLOG_TYPE; 默认, disable   日志类型, 开启： udp or tcp 
 NGX_SVC_ADDR; 默认, 127.0.0.1 业务服务地址
 NGX_RESOLVRE; 默认, 127.0.0.1 DNS服务地址
-NGX_AUTHX_PORT; 默认, 12001  登录鉴权端口
+NGX_INLOG_PORT; 默认, 12001  登录鉴权端口
 NGX_AUTHZ_PORT; 默认, 12006  接口鉴权端口
 NGX_PXY_P_PORT; 默认, 12011 系统代理端口, path
 NGX_PXY_H_PORT; 默认, 12012 系统代理端口, http, 支持https，但是无法记录日志

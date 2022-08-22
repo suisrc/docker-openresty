@@ -1,6 +1,7 @@
 -- log_by_lua
 if logger_disable == nil then logger_disable = os.getenv("LUA_SYSLOG_TYPE") == "disable" end
-if logger_disable then return end
+if logger_disable then return end            -- 日志记录器已被禁用
+if ngx.var.uri == "/healthz" then return end -- 忽略健康检查接口
 
 -- 移除了用户信息部分内容
 local cjson = require "cjson"
