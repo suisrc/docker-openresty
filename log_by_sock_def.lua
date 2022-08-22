@@ -6,8 +6,6 @@ if ngx.var.uri == "/healthz" then return end -- 忽略健康检查接口
 -- 移除了用户信息部分内容
 local cjson = require "cjson"
 local logger = require "resty.socket.logger"
-
-
 if not logger.initted() then
     local ok, err = logger.init{
         host      = os.getenv("LUA_SYSLOG_HOST") or "127.0.0.1",
@@ -24,6 +22,7 @@ if not logger.initted() then
 end
 -- 日志级别信息
 local msg = {}
+
 msg.traceId = ngx.var.http_x_request_id
 msg.clientId = ngx.var.http_x_client_id or ngx.var.cookie__xc
 msg.remoteIp = ngx.var.http_x_real_ip or ngx.var.realip_remote_addr
@@ -47,8 +46,12 @@ msg.tags = ngx.var.proxy_tags or ""
 msg.serviceName = ngx.var.proxy_host or ngx.ctx.sub_proxy_host or ""
 msg.serviceAddr = ngx.var.upstream_addr or ngx.ctx.sub_upstream_addr or ""
 msg.serviceAuth = ngx.ctx.sub_proxy_host or ""
-msg.requester = msg.remoteIp     -- 请求者
-msg.responder = msg.serviceName  -- 响应者
+
+msg.clientName = loc_area_name or ""
+msg.clientAddr = ngx.var.remote_addr or "" -- 请求者
+if msg.clientAddr == "127.0.0.1" and loc_area_ip ~= "" then msg.clientAddr = loc_area_ip end
+msg.clientAddr = msg.clientAddr..":"..ngx.var.remote_port
+
 -- msg.reqHeaders = ngx.req.raw_header(true) or ""
 -- msg.reqCookies = ngx.var.http_cookie or ""
 local rpsky = "x-request-sky-"  -- 包含认证敏感信息，不能对外开放
@@ -75,7 +78,7 @@ for k, v in pairs(ngx.req.get_headers()) do
         end
     end
     if k == rpsrv then
-        msg.requester = v
+        msg.responder = v
     end
 end
 msg.respHeaders = ""

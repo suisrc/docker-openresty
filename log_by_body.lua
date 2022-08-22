@@ -5,6 +5,25 @@
 if logger_disable == nil then logger_disable = os.getenv("LUA_SYSLOG_TYPE") == "disable" end
 if logger_disable then return end
 
+-- 通过/etc/hosts文件获取局域网IP
+if loc_area_ip == nil then
+    local f_host = io.open("/etc/hosts")
+    if f_host then -- 获取本地局域网IP
+        for line in f_host:lines() do
+            local ip, host = string.match(line, "^(%d+%.%d+%.%d+%.%d+)%s+([%w-_%.]*)")
+            if host ~= nil and string.find(host, "localhost") == nil then 
+                loc_area_ip = ip
+                loc_area_name = host
+                break  
+            end
+        end
+        f_host:close()
+    end
+    if loc_area_ip == nil then  loc_area_ip = "" end
+    ngx.log(ngx.ERR, "loc_area_ip:"..loc_area_ip..", loc_area_name:"..loc_area_name..";")
+end
+
+-- 处理子请求和请求的body数据
 if ngx.is_subrequest then
     local chunk, eof = ngx.arg[1], ngx.arg[2]
     if eof then

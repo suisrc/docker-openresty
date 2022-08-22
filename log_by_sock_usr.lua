@@ -3,6 +3,7 @@ if logger_disable == nil then logger_disable = os.getenv("LUA_SYSLOG_TYPE") == "
 if logger_disable then return end            -- 日志记录器已被禁用
 if ngx.var.uri == "/healthz" then return end -- 忽略健康检查接口
 
+-- 处理用户请求日志信息
 local cjson = require "cjson"
 local logger = require "resty.socket.logger"
 if not logger.initted() then
@@ -32,6 +33,7 @@ end
 -- method(方法), status(状态), rqtime(请求), rptime(耗时), result_2(成功，失败，重定向), rqheader, rpheader(返回前端的header信息)
 -- host(域名), path(路径), body(参数,只记录json), json(只有返回json结果才记录)
 local msg = {}
+
 msg.traceId = ngx.var.http_x_request_id
 msg.clientId = ngx.var.http_x_client_id or ngx.var.cookie__xc
 msg.remoteIp = ngx.var.http_x_real_ip or ngx.var.realip_remote_addr
@@ -86,8 +88,12 @@ msg.tags = ngx.var.proxy_tags or ""
 msg.serviceName = ngx.var.proxy_host or ngx.ctx.sub_proxy_host or ""
 msg.serviceAddr = ngx.var.upstream_addr or ngx.ctx.sub_upstream_addr or ""
 msg.serviceAuth = ngx.ctx.sub_proxy_host or ""
-msg.requester = msg.remoteIp     -- 请求者
-msg.responder = msg.serviceName  -- 响应者
+
+msg.responder =  msg.serviceAddr or ""    -- 响应者
+msg.requester = ngx.var.remote_addr or "" -- 请求者
+if msg.requester == "127.0.0.1" and localarea ~= "" then msg.requester = localarea end
+msg.requester = msg.requester..":"..ngx.var.remote_port
+
 -- msg.reqHeaders = ngx.req.raw_header(true) or ""
 -- msg.reqCookies = ngx.var.http_cookie or ""
 local rpsky = "x-request-sky-"  -- 包含认证敏感信息，不能对外开放
@@ -114,7 +120,7 @@ for k, v in pairs(ngx.req.get_headers()) do
         end
     end
     if k == rpsrv then
-        msg.requester = v
+        msg.responder = v
     end
 end
 msg.respHeaders = ""
