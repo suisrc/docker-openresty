@@ -14,7 +14,7 @@ if [ $KS_WATCHDOG ]; then
     fi
     ## 局域网域名
     if [[ ! $LUA_PROXY_LAN_M ]]; then
-        export LUA_PROXY_LAN_M="."`cat /etc/resolv.conf | grep "search" | awk '{print $2}'`
+        export LUA_PROXY_LAN_M=`cat /etc/resolv.conf | grep "search" | awk '{print $2}'`
     fi
     ## LUA需要的系统环境变量
     if [[ ! $LUA_NGX_ENV_PAS ]]; then

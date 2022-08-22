@@ -1,6 +1,6 @@
 -- 修正，代理服务器域名解析问题
 if lan_domain == nil then 
-    lan_domain = os.getenv("LUA_PROXY_LAN_M") or false
+    lan_domain = "."..os.getenv("LUA_PROXY_LAN_M") or false
 end
 if lan_domain then return end -- 不需要修复
 
