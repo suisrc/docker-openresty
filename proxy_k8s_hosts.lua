@@ -3,7 +3,7 @@ if lan_domain == nil then
     lan_domain = "."..os.getenv("LUA_PROXY_LAN_M") or false
     ngx.log(ngx.ERR, "lan_domain:", lan_domain)
 end
-if lan_domain then return end -- 不需要修复
+if not lan_domain then return end -- 不需要修复
 
 -- 本地域名，不处理
 if ngx.var.proxy_http_host == "localhost" then 
