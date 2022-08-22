@@ -1,9 +1,9 @@
 -- 修正，代理服务器域名解析问题
 if lan_domain == nil then 
-    lan_domain = "."..os.getenv("LUA_PROXY_LAN_M") or false
+    lan_domain = "."..os.getenv("LUA_PROXY_LAN_M")
     ngx.log(ngx.ERR, "lan_domain:", lan_domain)
 end
-if not lan_domain then return end -- 不需要修复
+if lan_domain == "." then return end -- 不需要修复
 
 -- 本地域名，不处理
 if ngx.var.proxy_http_host == "localhost" then 
