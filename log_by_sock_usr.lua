@@ -160,7 +160,7 @@ if msg.status >= "400" then
     msg.result2 = "错误"
 elseif msg.status >= "300" then
     msg.result2 = "重定向"
-elseif msg.respBody ~= nil and msg.respBody ~= "" then
+elseif msg.respBody ~= nil and msg.respBody ~= "" and string.sub(msg.respBody, 1, 1) ~= "#" then
     -- 解析 json
     local resj = cjson.decode(msg.respBody)
     -- 返回值可能存在不规范情况，即不是json类型
