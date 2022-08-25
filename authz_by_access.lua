@@ -1,5 +1,5 @@
 -- access_by_lua
-local spp = ngx.var.lua_skip_pre_path or "/api/iam/v1/a/" -- 跳过忽略的接口
+local spp = ngx.var.lua_skip_pre_path or "/api/iam/" -- 跳过忽略的接口
 if spp and string.sub(ngx.var.uri, 1, #spp) == spp or ngx.var.uri == "/healthz" then
     -- ngx.log(ngx.ERR, "skip pre path: ", ngx.var.uri)
     return

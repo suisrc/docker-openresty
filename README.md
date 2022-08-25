@@ -3,13 +3,11 @@
 kratos watchdog => kwdog 看门狗
 
 ## 环境变量
+``` .env
 NGX_MASTER_PROC; 默认, on, off: 单线程模式 
 NGX_WORKER_CONNS; 默认, 4096， # 单实例服务进程，无需太多线程 2x4096即可
 NGX_WORKER_COUNT; 默认, 2， # 可以适当缩小，用户保护业务应用的并发清空
 KS_WATCHDOG; 默认, 关闭 看门狗模式， KS_WATCHDOG=inlog,authz,pxy_p,pxy_h,pxy_i,pxy_a
-LUA_SYSLOG_HOST; 默认, 127.0.0.1 日志地址
-LUA_SYSLOG_PORT; 默认, 5144      日志端口
-LUA_SYSLOG_TYPE; 默认, disable   日志类型, 开启： udp or tcp 
 NGX_SVC_ADDR; 默认, 127.0.0.1 业务服务地址
 NGX_RESOLVRE; 默认, 127.0.0.1 DNS服务地址
 NGX_INLOG_PORT; 默认, 12001  登录鉴权端口
@@ -18,19 +16,38 @@ NGX_PXY_P_PORT; 默认, 12011 系统代理端口, path
 NGX_PXY_H_PORT; 默认, 12012 系统代理端口, http, 支持https，但是无法记录日志
 NGX_PXY_I_PORT; 默认, 12013 系统代理端口, iptables， 需要虚假证书支持
 NGX_PXY_A_PORT; 默认，12014 系统代理端口, all_proxy, http and https， 需要虚假证书支持
-NGX_KIN_HTTP; 默认, http
-NGX_CAS_HOST; 默认, end-iam-cas-svc 鉴权服务器，用户提供默认callback接口
-NGX_KIN_HOST; 默认, end-iam-kin-svc 令牌服务器，提供用户登录信息管理
-NGX_CAS_PATH; 默认, end-iam-cas-svc/authz 二次鉴权服务器，一般指向CAS，有时候也指向KIN
+NGX_AUTHZ_EXTRA; 默认, 空 二次鉴权服务器额外参数，一般指向CAS，有时候也指向KIN
+NGX_IAM_AUTHZ; 默认，http://end-iam-cas-svc/authz?$args
 LOG_PROXY_HANDLER; 默认，/etc/nginx/az/log_by_sock_def.lua
 LOG_AUTHZ_HANDLER; 默认，/etc/nginx/az/log_by_sock_usr.lua
 LUA_NGX_SSL_CACHE; 默认,没有, 如果强制开启pxy_i or pxy_a, 自动配置为10m，如果使用pxy_i, pxy_a, 需要指定
 NGX_HTTP_CONF;   http,   自定义配置
 NGX_STREAM_CONF; stream, 自定义配置
+LUA_SYSLOG_HOST; 默认, 127.0.0.1 日志地址
+LUA_SYSLOG_PORT; 默认, 5144      日志端口
+LUA_SYSLOG_TYPE; 默认, disable   日志类型, 开启： udp or tcp 
 LUA_FAKESSL_URI; http://10.103.93.57/api/ssl/v1/cert?token=Ckt1YmVybmV0ZXM&key=tst&profile=&kind=1&cn=dev01&domain=%s
+LUA_PROXY_LAN_M; 默认, .default.svc.cluster.local
+LUA_NGX_ENV_DEF; 默认, env ...
+LUA_PXY_FIX_HOSTS; 默认, /etc/nginx/az/proxy_k8s_hosts.lua, 修复局域网代理host
+```
 
 PS: 默认系统禁用日志, LUA_SYSLOG_TYPE=udp， 进出流量监控
     LUA_FAKESSL_URI,参数中有且仅有一个“%s”的参数用于接受域名参数
+
+NGX_AUTHZ_EXTRA: >-
+\n  location = /api/iam/v1/a/odic/authc {
+\n    proxy_pass  http://end-iam-cas-svc/authc?$args;
+\n  }
+\n  location = /api/iam/v1/a/odic/authx {
+\n    proxy_pass  http://end-iam-cas-svc/authx?$args;
+\n  }
+\n  location = /api/iam/v1/a/odic/authz {
+\n    proxy_pass  http://end-iam-cas-svc/authz?$args;
+\n  }
+\n  location ^~ /api/iam/v1/a/ {
+\n    proxy_pass  http://end-iam-kin-svc;
+\n  }
 
 ### test
 

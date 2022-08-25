@@ -17,8 +17,8 @@ if [ $KS_WATCHDOG ]; then
         export LUA_PROXY_LAN_M=`cat /etc/resolv.conf | grep "search" | awk '{print $2}'`
     fi
     ## LUA需要的系统环境变量
-    if [[ ! $LUA_NGX_ENV_PAS ]]; then
-        export LUA_NGX_ENV_PAS="env LUA_SYSLOG_HOST;env LUA_SYSLOG_TYPE;env LUA_FAKESSL_URI;env LUA_PROXY_LAN_M;"
+    if [[ ! $LUA_NGX_ENV_DEF ]]; then
+        export LUA_NGX_ENV_DEF="env LUA_SYSLOG_HOST;env LUA_SYSLOG_TYPE;env LUA_FAKESSL_URI;env LUA_PROXY_LAN_M;"
     fi
     ##################################################################################
     if [[ $KS_WATCHDOG =~ 'inlog' ]]; then ## 登录鉴权
