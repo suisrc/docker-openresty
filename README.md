@@ -7,7 +7,8 @@ kratos watchdog => kwdog 看门狗
 NGX_MASTER_PROC; 默认, on, off: 单线程模式 
 NGX_WORKER_CONNS; 默认, 4096， # 单实例服务进程，无需太多线程 2x4096即可
 NGX_WORKER_COUNT; 默认, 2， # 可以适当缩小，用户保护业务应用的并发清空
-KS_WATCHDOG; 默认, 关闭 看门狗模式， KS_WATCHDOG=inlog,authz,pxy_p,pxy_h,pxy_i,pxy_a
+KS_WATCHDOG; 默认, 关闭 看门狗模式， KS_WATCHDOG=inlog,authz
+KS_PROXYDOG; 默认，关闭 看门狗代理， KS_PROXYDOG=pxy_p,pxy_h,pxy_a,pxy_i
 NGX_SVC_ADDR; 默认, 127.0.0.1 业务服务地址
 NGX_RESOLVRE; 默认, 127.0.0.1 DNS服务地址
 NGX_INLOG_PORT; 默认, 12001  登录鉴权端口
@@ -30,6 +31,7 @@ LUA_FAKESSL_URI; http://10.103.93.57/api/ssl/v1/cert?token=Ckt1YmVybmV0ZXM&key=t
 LUA_PROXY_LAN_M; 默认, .default.svc.cluster.local
 LUA_NGX_ENV_DEF; 默认, env ...
 LUA_PXY_FIX_HOSTS; 默认, /etc/nginx/az/proxy_k8s_hosts.lua, 修复局域网代理host
+
 ```
 
 PS: 默认系统禁用日志, LUA_SYSLOG_TYPE=udp， 进出流量监控

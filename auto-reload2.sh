@@ -30,22 +30,22 @@ if [ $KS_WATCHDOG ]; then
         echo "envsubst /etc/nginx/kg/authz.conf"
     fi
     ##################################################################################
-    if [[ $KS_WATCHDOG =~ 'pxy_p' ]]; then ## path_proxy代理
+    if [[ $KS_PROXYDOG =~ 'pxy_p' ]]; then ## path_proxy代理
         envsubst  "$vars" < /etc/nginx/kg/pxy_p.conf > /etc/nginx/conf.d/pxy_p.conf
         echo "envsubst /etc/nginx/kg/pxy_p.conf"
     fi
-    if [[ $KS_WATCHDOG =~ 'pxy_h' ]]; then ## http_proxy代理
+    if [[ $KS_PROXYDOG =~ 'pxy_h' ]]; then ## http_proxy代理
         envsubst  "$vars" < /etc/nginx/kg/pxy_h.conf > /etc/nginx/conf.d/pxy_h.conf
         echo "envsubst /etc/nginx/kg/pxy_h.conf"
     fi
-    if [[ $KS_WATCHDOG =~ 'pxy_a' ]]; then ## all_proxy代理
+    if [[ $KS_PROXYDOG =~ 'pxy_a' ]]; then ## all_proxy代理
         envsubst  "$vars" < /etc/nginx/kg/pxy_a.conf > /etc/nginx/conf.d/pxy_a.conf
         echo "envsubst /etc/nginx/kg/pxy_a.conf"
         if [[ ! $LUA_NGX_SSL_CACHE ]]; then ## 虚假证书需要共享缓存
             export LUA_NGX_SSL_CACHE='lua_shared_dict ssl_cache      10m;'
         fi
     fi
-    if [[ $KS_WATCHDOG =~ 'pxy_i' ]]; then ## iptables_proxy代理
+    if [[ $KS_PROXYDOG =~ 'pxy_i' ]]; then ## iptables_proxy代理
         envsubst  "$vars" < /etc/nginx/kg/pxy_i.conf   > /etc/nginx/conf.d/pxy_i.conf
         envsubst  "$vars" < /etc/nginx/kg/pxy_i.stream > /etc/nginx/conf.d/pxy_i.stream
         echo "envsubst /etc/nginx/kg/pxy_i.conf"
