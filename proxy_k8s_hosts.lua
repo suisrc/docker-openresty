@@ -19,7 +19,7 @@ if loc_area_ip == nil then
 end
 
 if lan_domain == nil then 
-    lan_domain = "."..os.getenv("LUA_PROXY_LAN_M") -- 读取环境变量
+    lan_domain = "."..(os.getenv("LUA_PROXY_LAN_M") or "") -- 读取环境变量
     ngx.log(ngx.ERR, "lan_domain:", lan_domain)
     -- "."标识没有取到环境变量，不对局域网域名处理
 end
