@@ -18,7 +18,7 @@ NGX_PXY_H_PORT; 默认, 12012 系统代理端口, http, 支持https，但是无�
 NGX_PXY_I_PORT; 默认, 12013 系统代理端口, iptables， 需要虚假证书支持
 NGX_PXY_A_PORT; 默认，12014 系统代理端口, all_proxy, http and https， 需要虚假证书支持
 NGX_AUTHZ_EXTRA; 默认, 空 二次鉴权服务器额外参数，一般指向CAS，有时候也指向KIN
-NGX_IAM_AUTHZ; 默认，http://end-iam-cas-svc/authz?$args
+NGX_IAM_AUTHZ; 默认，http://end-iam-cas-svc => http://end-iam-cas-svc/authz?$args
 LOG_PROXY_HANDLER; 默认，/etc/nginx/az/log_by_sock_def.lua
 LOG_AUTHZ_HANDLER; 默认，/etc/nginx/az/log_by_sock_usr.lua
 LUA_NGX_SSL_CACHE; 默认,没有, 如果强制开启pxy_i or pxy_a, 自动配置为10m，如果使用pxy_i, pxy_a, 需要指定
@@ -37,19 +37,19 @@ LUA_PXY_FIX_HOSTS; 默认, /etc/nginx/az/proxy_k8s_hosts.lua, 修复局域网代
 PS: 默认系统禁用日志, LUA_SYSLOG_TYPE=udp， 进出流量监控
     LUA_FAKESSL_URI,参数中有且仅有一个“%s”的参数用于接受域名参数
 
-NGX_AUTHZ_EXTRA: >-
-\n  location = /api/iam/v1/a/odic/authc {
-\n    proxy_pass  http://end-iam-cas-svc/authc?$args;
-\n  }
-\n  location = /api/iam/v1/a/odic/authx {
-\n    proxy_pass  http://end-iam-cas-svc/authx?$args;
-\n  }
-\n  location = /api/iam/v1/a/odic/authz {
-\n    proxy_pass  http://end-iam-cas-svc/authz?$args;
-\n  }
-\n  location ^~ /api/iam/v1/a/ {
-\n    proxy_pass  http://end-iam-kin-svc;
-\n  }
+NGX_AUTHZ_EXTRA: |-
+  location = /api/iam/v1/a/odic/authc {
+    proxy_pass  http://end-iam-cas-svc/authc?$args;
+  }
+  location = /api/iam/v1/a/odic/authx {
+    proxy_pass  http://end-iam-cas-svc/authx?$args;
+  }
+  location = /api/iam/v1/a/odic/authz {
+    proxy_pass  http://end-iam-cas-svc/authz?$args;
+  }
+  location ^~ /api/iam/v1/a/ {
+    proxy_pass  http://end-iam-kin-svc;
+  }
 
 ### test
 
