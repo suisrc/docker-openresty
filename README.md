@@ -17,6 +17,7 @@ NGX_PXY_P_PORT; 默认, 12011 系统代理端口, path
 NGX_PXY_H_PORT; 默认, 12012 系统代理端口, http, 支持https，但是无法记录日志
 NGX_PXY_I_PORT; 默认, 12013 系统代理端口, iptables， 需要虚假证书支持
 NGX_PXY_A_PORT; 默认，12014 系统代理端口, all_proxy, http and https， 需要虚假证书支持
+NGX_INLOG_EXTRA; 默认, 空， 日志额外参数
 NGX_AUTHZ_EXTRA; 默认, 空 二次鉴权服务器额外参数，一般指向CAS，有时候也指向KIN
 NGX_IAM_AUTHZ; 默认，http://end-iam-cas-svc => http://end-iam-cas-svc/authz?$args
 LOG_PROXY_HANDLER; 默认，/etc/nginx/az/log_by_sock_def.lua
