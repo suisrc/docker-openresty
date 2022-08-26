@@ -91,7 +91,7 @@ msg.serviceAuth = ngx.ctx.sub_proxy_host or ""
 
 msg.responder =  msg.serviceAddr or ""    -- 响应者
 msg.requester = ngx.var.remote_addr or "" -- 请求者
-if msg.requester == "127.0.0.1" and localarea ~= "" then msg.requester = localarea end
+if msg.requester == "127.0.0.1" and loc_area_ip ~= nil and loc_area_ip ~= "" then msg.requester = loc_area_ip end
 msg.requester = msg.requester..":"..ngx.var.remote_port
 
 -- msg.reqHeaders = ngx.req.raw_header(true) or ""
