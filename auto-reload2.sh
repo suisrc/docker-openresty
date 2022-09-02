@@ -25,9 +25,9 @@ if [ $KS_WATCHDOG ]; then
         envsubst  "$vars" < /etc/nginx/kg/inlog.conf > /etc/nginx/conf.d/inlog.conf
         echo "envsubst /etc/nginx/kg/inlog.conf"
     fi
-    if [[ $KS_WATCHDOG =~ 'authx' ]]; then ## 接口鉴权, 与authz只能二选一， 优先authz
-        envsubst  "$vars" < /etc/nginx/kg/authx.conf > /etc/nginx/conf.d/authz.conf
-        echo "envsubst /etc/nginx/kg/authx.conf"
+    if [[ $KS_WATCHDOG =~ 'autho' ]]; then ## 接口鉴权, 与authz只能二选一， 优先authz
+        envsubst  "$vars" < /etc/nginx/kg/autho.conf > /etc/nginx/conf.d/authz.conf
+        echo "envsubst /etc/nginx/kg/autho.conf"
     fi
     if [[ $KS_WATCHDOG =~ 'authz' ]]; then ## 接口鉴权
         envsubst  "$vars" < /etc/nginx/kg/authz.conf > /etc/nginx/conf.d/authz.conf
