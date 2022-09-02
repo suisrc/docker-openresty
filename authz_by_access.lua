@@ -1,9 +1,21 @@
 -- access_by_lua
+-- 鉴权规则：根据用户的访问权限，判断用户是否有权限访问该资源
+
+-- ########################################################################
+if ngx.var.uri == "/healthz" or ngx.var.uri == "/tracez" then 
+    -- 健康检查接口和追踪检查接口不进行权限控制
+    return
+end
+-- if spp and string.sub(ngx.var.uri, 1, #"/api/pub/") == "/api/pub/" then
+--     -- 公共接口不进行权限控制，也不记录用户身份信息
+--     return
+-- end
 local spp = ngx.var.lua_skip_pre_path or "/api/iam/" -- 跳过忽略的接口
-if spp and string.sub(ngx.var.uri, 1, #spp) == spp or ngx.var.uri == "/healthz" then
+if spp and string.sub(ngx.var.uri, 1, #spp) == spp then
     -- ngx.log(ngx.ERR, "skip pre path: ", ngx.var.uri)
     return
 end
+-- ########################################################################
 -- 子请求验证权限
 local auz = ngx.var.lua_auth_uri_path or "/authz" -- 验证的接口
 local res = ngx.location.capture(auz, { copy_all_vars = true, ctx = ngx.ctx })
@@ -22,6 +34,7 @@ if res.status >= ngx.HTTP_OK and res.status < ngx.HTTP_SPECIAL_RESPONSE then
     -- 继续主请求内容
     return
 end
+-- ########################################################################
 -- 请求被认证服务终止，以认证服务器结果作为请求结果返回
 for k,v in pairs(res.header) do
     if string.byte(k,1) == 88 and string.byte(k,2) == 45 then

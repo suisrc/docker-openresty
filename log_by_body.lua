@@ -19,6 +19,8 @@ end
 if ngx.ctx.resp_buffered_ignore then
     return -- 操作内容忽略
 end
+
+-- #######################################################################
 if ngx.ctx.resp_buffered == nil then
     local ajson = "application/json"
     local rtype = ngx.var.upstream_http_content_type
