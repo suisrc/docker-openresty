@@ -20,7 +20,7 @@ if [ $KS_WATCHDOG ]; then
     if [[ ! $LUA_NGX_ENV_DEF ]]; then
         export LUA_NGX_ENV_DEF="env LUA_SYSLOG_HOST;env LUA_SYSLOG_TYPE;env LUA_FAKESSL_URI;env LUA_PROXY_LAN_M;"
     fi
-    if [[ !$NGX_INLOG_EXTRA ]]; then
+    if [[ ! $NGX_INLOG_EXTRA ]]; then
         evalue=""
         ## 提出环境变量
         extras=`env | grep "NGX_INLOG_EXTRA_" | awk -F= '{print $1}'`
@@ -30,7 +30,7 @@ if [ $KS_WATCHDOG ]; then
         ## 赋值环境变量
         export NGX_INLOG_EXTRA="$evalue"
     fi
-    if [[ !$NGX_AUTHZ_EXTRA ]]; then
+    if [[ ! $NGX_AUTHZ_EXTRA ]]; then
         evalue=""
         extras=`env | grep "NGX_AUTHZ_EXTRA_" | awk -F= '{print $1}'`
         for extra in $extras; do evalue="$evalue\n###env.$extra\n$(eval echo \"\$$extra\")"; done
