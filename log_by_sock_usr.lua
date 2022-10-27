@@ -12,8 +12,13 @@ if not logger.initted() then
         port      = tonumber(os.getenv("LUA_SYSLOG_PORT")) or 5144,
         sock_type = os.getenv("LUA_SYSLOG_TYPE") or "udp",
         -- flush after each log, >1会发生日志丢失
-        flush_limit= ngx.var.lua_syslog_limit or 1, 
-        --drop_limit= 5678
+        flush_limit= 1,
+        -- 缓存越界，丢弃当前消息, 20MB，1048576=1MB
+        drop_limit= 20971520,
+        -- 连接池， 平均每个连接1MB
+        pool_size = 20,
+        -- 发送尝试失败次数, 只重试一次，防止阻塞
+        max_retry_times = 1,
     }
     if not ok then
         ngx.log(ngx.ERR, "failed to initialize the logger: ", err)

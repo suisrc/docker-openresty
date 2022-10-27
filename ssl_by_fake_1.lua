@@ -1,4 +1,7 @@
 -- 动态构建虚假证书
+-- export LUA_FAKESSL_URI='http://10.103.93.57/api/ssl/v1/cert?token=xCzAJBgNVBAsTAkNB&key=dev&profile=&kind=1&domain=%s'
+-- curl http://10.103.93.57/api/ssl/v1/ca/txt?key=dev > bin/ca.crt
+-- curl -x 127.0.0.1:83 --cacert bin/ca.crt https://www.bing.com
 if fakessl_uri == nil then fakessl_uri = os.getenv("LUA_FAKESSL_URI") or false end
 
 local cjson = require "cjson"
