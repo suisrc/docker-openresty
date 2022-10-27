@@ -49,8 +49,8 @@ end
 msg.matchPolicys = ngx.var.http_x_request_sky_policys or ngx.ctx.sub_headers and ngx.ctx.sub_headers["X-Request-Sky-Policys"] or ""
 -- 请求描述
 msg.scheme = ngx.var.scheme or ""
-msg.host = ngx.var.proxy_host or ngx.var.host or ""
-msg.path = ngx.var.proxy_uri or ngx.var.request_uri or ""
+msg.host = ngx.var.proxy_p_host or ngx.var.host or ""
+msg.path = ngx.var.proxy_p_uri or ngx.var.request_uri or ""
 msg.method = ngx.var.request_method or ""
 msg.status = ngx.var.status or ""
 msg.startTime = os.date("%Y-%m-%dT%H:%M:%S", ngx.req.start_time()) or ""
