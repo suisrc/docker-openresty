@@ -23,15 +23,16 @@ end
 -- #######################################################################
 if ngx.ctx.resp_buffered == nil then
     local ajson = "application/json"
+    local axxml = "application/xml"
     local rtype = ngx.var.upstream_http_content_type
     if rtype == nil then
         rtype = ngx.resp.get_headers()["content-type"]
     end
-    -- ngx.log(ngx.ERR, "content_type: ", rtype)
-    if rtype and string.sub(rtype, 1, #ajson) ~= ajson then
+    -- ngx.log(ngx.ERR, "content_type: ", rtype) -- 非json和xml格式的body不记录
+    if not (rtype ~= nil and (string.sub(rtype, 1, #ajson) == ajson or string.sub(rtype, 1, #axxml) == axxml)) then
         ngx.ctx.resp_buffered_ignore = true
-        ngx.ctx.resp_body = "# 响应内容不是JSON类型,忽略"
-        return -- 只记录json内容
+        ngx.ctx.resp_body = "# 响应内容不是JSON/XML类型,忽略"
+        return -- 只记录json/xml内容
     end
 end
 local chunk, eof = ngx.arg[1], ngx.arg[2]
@@ -42,11 +43,11 @@ if chunk ~= nil and chunk ~= "" then
     -- 这种行为很容易导致LuaJIT发生GC，但是这确实是当前唯一解决方案
     ngx.ctx.resp_buffered = (ngx.ctx.resp_buffered or "")..chunk
 end
--- resp_buffered超过4MB，则忽略 4 * 1024 * 1024 = 4194304 = 2 << 22
-if ngx.ctx.resp_buffered ~= nil and #ngx.ctx.resp_buffered > 4194304 then
+-- resp_buffered超过2MB，则忽略 2 * 1024 * 1024 = 2097152 = 2 << 21
+if ngx.ctx.resp_buffered ~= nil and #ngx.ctx.resp_buffered > 2097152 then
     ngx.ctx.resp_buffered_ignore = true
-    ngx.ctx.resp_body = "# 响应内容大于4MB,忽略"
-    return -- 内容超过4MB，忽略
+    ngx.ctx.resp_body = "# 响应内容大于2MB,忽略"
+    return -- 内容超过2MB，忽略
 end
 
 if eof then

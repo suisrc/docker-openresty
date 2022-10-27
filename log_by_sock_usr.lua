@@ -143,9 +143,12 @@ for k, v in pairs(ngx.resp.get_headers()) do
 end
 -- 参数
 local ajson = "application/json"
+local axxml = "application/xml"
 local rqtyp = ngx.var.http_content_type
 if rqtyp and string.sub(rqtyp, 1, #ajson) == ajson then
     msg.reqBody = ngx.var.request_body -- json格式的参数被记录
+elseif rqtyp and string.sub(rqtyp, 1, #axxml) == axxml then
+    msg.reqBody = ngx.var.request_body -- xml格式的参数被记录
 else
     msg.reqBody = "" -- 不记录参数
 end
@@ -168,8 +171,8 @@ elseif msg.status >= "300" then
 elseif msg.respBody ~= nil and msg.respBody ~= "" and string.sub(msg.respBody, 1, 1) ~= "#" then
     -- 解析 json
     local resj = cjson.decode(msg.respBody)
-    -- 返回值可能存在不规范情况，即不是json类型
-    if type(resj) == "table" and (not resj.success) then
+    -- 返回值可能存在不规范情况，即不是json类型， (not resj.success)
+    if type(resj) == "table" and resj.success == false then
         if resj.showType == 9 then
             msg.result2 = "重定向"
         else
