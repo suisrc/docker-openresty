@@ -4,6 +4,8 @@
 -- body采集主要是给日志系统提供数据，如果禁用日志系统，则不记录body
 if logger_disable == nil then logger_disable = os.getenv("LUA_SYSLOG_TYPE") == "disable" end
 if logger_disable then return end
+-- 默认只记录小于60KB的日志，小于60KB的内容，被舍弃
+if logger_body_kb == nil then logger_body_kb = (tonumber(os.getenv("LUA_LOG_BODY_KB")) or 60) * 1024 end
 
 -- 处理子请求和请求的body数据
 if ngx.is_subrequest then
@@ -43,11 +45,11 @@ if chunk ~= nil and chunk ~= "" then
     -- 这种行为很容易导致LuaJIT发生GC，但是这确实是当前唯一解决方案
     ngx.ctx.resp_buffered = (ngx.ctx.resp_buffered or "")..chunk
 end
--- resp_buffered超过2MB，则忽略 2 * 1024 * 1024 = 2097152 = 2 << 21
-if ngx.ctx.resp_buffered ~= nil and #ngx.ctx.resp_buffered > 2097152 then
+-- resp_buffered超过限定，则忽略
+if ngx.ctx.resp_buffered ~= nil and #ngx.ctx.resp_buffered > logger_body_kb then
     ngx.ctx.resp_buffered_ignore = true
-    ngx.ctx.resp_body = "# 响应内容大于2MB,忽略"
-    return -- 内容超过2MB，忽略
+    ngx.ctx.resp_body = "# 响应内容大于"..(logger_body_kb/1024).."KB,忽略"
+    return -- 内容超过限定，忽略
 end
 
 if eof then

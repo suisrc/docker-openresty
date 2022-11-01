@@ -3,22 +3,27 @@ if logger_disable == nil then logger_disable = os.getenv("LUA_SYSLOG_TYPE") == "
 if logger_disable then return end            -- 日志记录器已被禁用
 if ngx.var.uri == "/healthz" then return end -- 忽略健康检查接口
 
+-- linux中udp最大包大小为65507，超过会被丢弃, tcp最大发送大小为5MB(自定义)
+if e_drop_size == nil then e_drop_size = (os.getenv("LUA_SYSLOG_TYPE") == "tcp") and 5242880 or 63488 end
+
 -- 处理用户请求日志信息
 local cjson = require "cjson"
 local logger = require "resty.socket.logger"
 if not logger.initted() then
+    -- 初始化日志组件
     local ok, err = logger.init{
-        host      = os.getenv("LUA_SYSLOG_HOST") or "127.0.0.1",
-        port      = tonumber(os.getenv("LUA_SYSLOG_PORT")) or 5144,
-        sock_type = os.getenv("LUA_SYSLOG_TYPE") or "udp",
+        host       = os.getenv("LUA_SYSLOG_HOST") or "127.0.0.1",
+        port       = tonumber(os.getenv("LUA_SYSLOG_PORT")) or 5144,
+        sock_type  = os.getenv("LUA_SYSLOG_TYPE") or "udp",
+        -- 缓存越界，丢弃当前消息, 5242880=5MB，1048576=1MB
+        -- 使用UDP，Linux系统默认64KB=65536
+        drop_limit = e_drop_size,
         -- flush after each log, >1会发生日志丢失
-        flush_limit= 1,
-        -- 缓存越界，丢弃当前消息, 20MB，1048576=1MB
-        drop_limit= 20971520,
-        -- 连接池， 平均每个连接1MB
-        pool_size = 20,
-        -- 发送尝试失败次数, 只重试一次，防止阻塞
-        max_retry_times = 1,
+        flush_limit     = 1,
+        -- 发送尝试失败次数, 不重试，防止阻塞
+        max_retry_times = 0,
+        -- 连接池， 平均每个连接1MB, UDP无效
+        pool_size       = 20,
     }
     if not ok then
         ngx.log(ngx.ERR, "failed to initialize the logger: ", err)

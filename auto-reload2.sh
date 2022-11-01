@@ -18,7 +18,7 @@ if [ $KS_WATCHDOG ]; then
     fi
     ## LUA需要的系统环境变量
     if [[ ! $LUA_NGX_ENV_DEF ]]; then
-        export LUA_NGX_ENV_DEF="env LUA_SYSLOG_HOST;env LUA_SYSLOG_TYPE;env LUA_FAKESSL_URI;env LUA_PROXY_LAN_M;"
+        export LUA_NGX_ENV_DEF="env LUA_SYSLOG_HOST;env LUA_SYSLOG_PORT;env LUA_SYSLOG_TYPE;env LUA_LOG_BODY_KB;env LUA_FAKESSL_URI;env LUA_PROXY_LAN_M;"
     fi
     if [[ ! $NGX_INLOG_EXTRA ]]; then
         evalue=""

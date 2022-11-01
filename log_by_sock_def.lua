@@ -2,23 +2,21 @@
 if logger_disable == nil then logger_disable = os.getenv("LUA_SYSLOG_TYPE") == "disable" end
 if logger_disable then return end            -- 日志记录器已被禁用
 if ngx.var.uri == "/healthz" then return end -- 忽略健康检查接口
+if e_drop_size == nil then e_drop_size = (os.getenv("LUA_SYSLOG_TYPE") == "tcp") and 5242880 or 63488 end
 
 -- 移除了用户信息部分内容
 local cjson = require "cjson"
 local logger = require "resty.socket.logger"
 if not logger.initted() then
     local ok, err = logger.init{
-        host      = os.getenv("LUA_SYSLOG_HOST") or "127.0.0.1",
-        port      = tonumber(os.getenv("LUA_SYSLOG_PORT")) or 5144,
-        sock_type = os.getenv("LUA_SYSLOG_TYPE") or "udp",
+        host       = os.getenv("LUA_SYSLOG_HOST") or "127.0.0.1",
+        port       = tonumber(os.getenv("LUA_SYSLOG_PORT")) or 5144,
+        sock_type  = os.getenv("LUA_SYSLOG_TYPE") or "udp",
+        drop_limit = e_drop_size,
         -- flush after each log, >1会发生日志丢失
-        flush_limit= 1,
-        -- 缓存越界，丢弃当前消息, 20MB，1048576=1MB
-        drop_limit= 20971520,
-        -- 连接池， 平均每个连接1MB
-        pool_size = 20,
-        -- 发送尝试失败次数, 只重试一次，防止阻塞
-        max_retry_times = 1,
+        flush_limit     = 1,
+        max_retry_times = 0,
+        pool_size       = 20,
     }
     if not ok then
         ngx.log(ngx.ERR, "failed to initialize the logger: ", err)
