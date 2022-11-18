@@ -18,11 +18,11 @@ end
 -- ########################################################################
 -- 子请求验证权限
 local auz = ngx.var.lua_auth_uri_path or "/authz" -- 验证的接口
-local res = ngx.location.capture(auz, { copy_all_vars = true, ctx = ngx.ctx })
+local res = ngx.location.capture(auz, { copy_all_vars = true, ctx = ngx.ctx, args = ngx.var.args })
 -- 设置响应的cookie信息
 if res.status >= ngx.HTTP_OK and res.status < ngx.HTTP_SPECIAL_RESPONSE then
     for k,v in pairs(res.header) do 
-        -- 传递请求头信息
+        -- 传递请求头信息， X-[88,45]
         if string.byte(k,1) == 88 and string.byte(k,2) == 45 then
             ngx.req.set_header(k, v)
         end
