@@ -72,6 +72,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt update \
     && DEBIAN_FRONTEND=noninteractive apt autoremove -y && rm -rf /var/lib/apt/lists/* \
     && mkdir -p /var/run/openresty \
     && mkdir -p /etc/nginx/conf.d \
+    && mkdir -p /www && cp -rf /usr/local/openresty/nginx/html /www \
     && ln -sf /dev/stdout /usr/local/openresty/nginx/logs/access.log \
     && ln -sf /dev/stderr /usr/local/openresty/nginx/logs/error.log
 
@@ -80,6 +81,8 @@ ENV PATH="$PATH:/usr/local/openresty/luajit/bin:/usr/local/openresty/nginx/sbin:
 
 # Copy nginx configuration files
 COPY nginx.conf /usr/local/openresty/nginx/conf/nginx.conf
+RUN ln -sf /usr/local/openresty/nginx/conf/nginx.conf /etc/nginx/nginx.conf
+ADD ["base.conf", "default.conf", "/etc/nginx/conf.d/"]
 
 # 部署启动文件
 ADD  ["*.sh", "/cmd/"]
