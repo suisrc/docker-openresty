@@ -1,10 +1,7 @@
-# https://hub.docker.com/r/openresty/openresty/tags
-# 1.19.9.1-2-buster buster-fat alpine 
-FROM openresty/openresty:1.19.9.1-10-buster-fat
-
-RUN apt update && apt install --no-install-recommends -y inotify-tools &&\
-    rm -rf /tmp/* /var/tmp/* /var/lib/apt/lists/*
-
-ADD ["*.sh", "/"]
-ADD nginx.conf  /usr/local/openresty/nginx/conf/nginx.conf
-CMD ["/auto-reload-1.sh"]
+FROM alpine:3.16
+ARG BUILDDATE
+LABEL buildDate=$BUILDDATE
+RUN apk --no-cache upgrade && \
+    apk add -U --no-cache iptables ip6tables nftables
+COPY entry /usr/bin/
+CMD ["entry"]

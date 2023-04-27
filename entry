@@ -1,0 +1,120 @@
+#!/bin/sh
+set -ex
+
+trap exit TERM INT
+
+BIN_DIR="/sbin"
+
+info()
+{
+    echo '[INFO] ' "$@"
+}
+fatal()
+{
+    echo '[ERROR] ' "$@" >&2
+    exit 1
+}
+
+check_iptables_mode() {
+    set +e
+    lsmod | grep "nf_tables" 2> /dev/null
+    if [ $? = 0 ]; then
+        mode=nft
+    else 
+        mode=legacy
+    fi
+    set -e
+}
+
+set_nft() {
+    for i in iptables iptables-save iptables-restore ip6tables; do 
+        ln -sf /sbin/xtables-nft-multi "$BIN_DIR/$i";
+    done
+}
+
+set_legacy() {
+    for i in iptables iptables-save iptables-restore ip6tables; do 
+        ln -sf /sbin/xtables-legacy-multi "$BIN_DIR/$i";
+    done
+}
+
+start_proxy() {
+    for src_range in ${SRC_RANGES}; do
+      if echo ${src_range} | grep -Eq ":"; then
+          ip6tables -t filter -I FORWARD -s ${src_range} -p ${DEST_PROTO} --dport ${SRC_PORT} -j ACCEPT
+      else
+          iptables -t filter -I FORWARD -s ${src_range} -p ${DEST_PROTO} --dport ${SRC_PORT} -j ACCEPT
+      fi
+    done
+
+    for dest_ip in ${DEST_IPS}; do
+        if echo ${dest_ip} | grep -Eq ":"; then
+            [ $(cat /proc/sys/net/ipv6/conf/all/forwarding) == 1 ] || exit 1
+            # ip6tables -t filter -A FORWARD -d ${dest_ip}/128 -p ${DEST_PROTO} --dport ${DEST_PORT} -j DROP
+            ip6tables -t nat -I PREROUTING ! -s ${dest_ip}/128 -p ${DEST_PROTO} --dport ${SRC_PORT} -j DNAT --to [${dest_ip}]:${DEST_PORT}
+            ip6tables -t nat -I POSTROUTING -d ${dest_ip}/128 -p ${DEST_PROTO} -j MASQUERADE
+        else
+            [ $(cat /proc/sys/net/ipv4/ip_forward) == 1 ] || exit 1
+            # iptables -t filter -A FORWARD -d ${dest_ip}/32 -p ${DEST_PROTO} --dport ${DEST_PORT} -j DROP
+            iptables -t nat -I PREROUTING ! -s ${dest_ip}/32 -p ${DEST_PROTO} --dport ${SRC_PORT} -j DNAT --to ${dest_ip}:${DEST_PORT}
+            iptables -t nat -I POSTROUTING -d ${dest_ip}/32 -p ${DEST_PROTO} -j MASQUERADE
+        fi
+    done
+
+    # 补充一下多转发的重定向，与之前的配置不冲突, 这里只支持ipv4, 增加了一种更加灵活的指定转发的方式
+    # 只有一个配置，SRC_DESC_PORTS， 确认是否需要ipv4的转发支持
+    if [ $(cat /proc/sys/net/ipv4/ip_forward) == 1 ]; then
+      for src_desc in ${SRC_DESC_PORTS}; do
+        # src:dest, 端口重定向 80>8080 443UDP>127.0.0.1:8443, 默认不写是TCP，必须大写
+        IFS=">" read -r src_port dest <<< "${src_desc}"
+        # 如果src_port不存在，跳过处理
+        if [ -z "${src_port}" ]; then
+            continue
+        fi
+        desc_proto="TCP"
+        # 如果src_port又后缀UDP或者TCP，删除后缀,只保留端口部分的内容
+        if echo ${src_port} | grep -Eq "UDP$"; then
+          desc_proto="UDP"
+          src_port=$(echo ${src_port} | sed 's/UDP$//g')
+        elif echo ${src_port} | grep -Eq "TCP$"; then
+          src_port=$(echo ${src_port} | sed 's/TCP$//g')
+        fi
+        dest_ip="127.0.0.1"
+        dest_port=${src_port}
+        # 如果dest存在, 如果存在":"，即指定了ip和port，如果存在"."，即指定了ip，否则指定了port
+        if echo ${dest} | grep -Eq ":"; then
+            IFS=":" read -r dest_ip dest_port <<< "${dest}" # IP:PORT
+        elif echo ${dest} | grep -Eq "\."; then
+            dest_ip=${dest} # Only IP
+        else
+            dest_port=${dest} # Only PORT
+        fi
+        # 执行转发规则增加
+        # echo "iptables -> src_port: ${src_port}, dest_ip: ${dest_ip}, dest_port: ${dest_port}, desc_proto: ${desc_proto}"
+        iptables -t nat -I PREROUTING ! -s ${dest_ip}/32 -p ${desc_proto} --dport ${src_port} -j DNAT --to ${dest_ip}:${desc_port}
+        iptables -t nat -I POSTROUTING -d ${dest_ip}/32 -p ${desc_proto} -j MASQUERADE
+      done
+    fi
+
+}
+
+check_iptables_mode
+case $mode in
+nft)
+    info "nft mode detected"
+    set_nft
+    ;;
+legacy)
+    info "legacy mode detected"
+    set_legacy
+    ;;
+*)
+    fatal "invalid iptables mode"
+    ;;
+esac
+start_proxy
+
+if [ ! -e /pause ]; then
+    mkfifo /pause
+fi
+</pause
