@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/ash
 set -ex
 
 trap exit TERM INT
