@@ -1,4 +1,4 @@
-# k3s-io/kipper-lb
+# k3s-io/klipper-lb
 
 增加SRC_DESC_PORTS环境变量，用于指定更加有趣的转发规则。
 

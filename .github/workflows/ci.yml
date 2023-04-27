@@ -6,7 +6,7 @@ on:
 
 env:
   DOCKER_IMAGE_NAME: suisrc/klipper
-  DOCKER_VERSION: '0.4.3'
+  DOCKER_VERSION: '0.4.3-1'
 
   QUAY_REGISTRY: quay.io
   DOCKER_REGISTRY: docker.io
