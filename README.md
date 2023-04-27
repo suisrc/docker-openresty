@@ -1,6 +1,6 @@
 # k3s-io/klipper-lb
 
-增加SRC_DESC_PORTS环境变量，用于指定更加有趣的转发规则。
+增加SRC_DEST_PORTS环境变量，用于指定更加有趣的转发规则。
 
 https://github.com/k3s-io/klipper-lb/blob/master/entry
 
