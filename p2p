@@ -1,0 +1,71 @@
+#!/bin/bash
+
+## 在命令行中不能使用">"特殊符号，使用"-"代替
+## bash   p2p.sh add 51280UDP-127.0.0.1:51280
+## bash   p2p.sh del 51280UDP-127.0.0.1:51280
+
+# 10001                     : 0.0.0.0 -> 127.0.0.1:10001
+# 10001-10002               : 0.0.0.0 -> 127.0.0.1:10002
+# 10001-127.0.0.2           : 0.0.0.0 -> 127.0.0.2:10001
+# 10001-127.0.0.2:10002     : 0.0.0.0 -> 127.0.0.1:10002
+# 10001UDP-127.0.0.2:10002  : 0.0.0.0 -> 127.0.0.1:10002, UDP
+
+set -e
+
+if [[ $1 != "add" && $1 != "del" || $2 == "" ]]; then
+    echo "Usage: $0 add|del src[UDP]>dest"
+    exit 1
+fi
+
+action=$1
+src_dest=$2
+
+# src:dest, 端口重定向 80>8080 443UDP>127.0.0.1:8443, 默认不写是TCP，必须大写
+IFS="-" read -r src_port dest <<< "${src_dest}"
+# 如果src_port不存在，跳过处理
+if [ -z "${src_port}" ]; then
+    echo "src_port is empty"
+    exit 1
+fi
+dest_proto="TCP"
+# 如果src_port又后缀UDP或者TCP，删除后缀,只保留端口部分的内容
+if echo ${src_port} | grep -Eq "UDP$"; then
+  dest_proto="UDP"
+  src_port=$(echo ${src_port} | sed 's/UDP$//g')
+elif echo ${src_port} | grep -Eq "TCP$"; then
+  src_port=$(echo ${src_port} | sed 's/TCP$//g')
+fi
+dest_ip="127.0.0.1"
+dest_port=${src_port}
+# 如果dest存在, 如果存在":"，即指定了ip和port，如果存在"."，即指定了ip，否则指定了port
+if echo ${dest} | grep -Eq ":"; then
+    IFS=":" read -r dest_ip dest_port <<< "${dest}" # IP:PORT
+elif echo ${dest} | grep -Eq "\."; then
+    dest_ip=${dest} # Only IP
+else
+    dest_port=${dest} # Only PORT
+fi
+
+# 执行的参数
+_echo_rule="port ${src_port}/${dest_proto} to ${dest_ip}:${dest_port}"
+_prerouting="! -s ${dest_ip}/32 -p ${dest_proto} --dport ${src_port} -j DNAT --to ${dest_ip}:${dest_port}"
+_postrouting="-d ${dest_ip}/32 -p ${dest_proto} -j MASQUERADE"
+
+# 执行的命令
+if [[ $action == "add" ]]; then
+    # 判定需要转发的规则的洞口是否被占用
+    iptables -t nat -C PREROUTING $_prerouting 2>/dev/null \
+    && echo "[add] port ${src_port} is already used!" && iptables -t nat -L | grep dpt:${src_port} && exit 1
+    # 执行转发规则增加
+    echo "[add] port $_echo_rule"
+    set -x
+    iptables -t nat -I PREROUTING  $_prerouting
+    iptables -t nat -I POSTROUTING $_postrouting
+else
+    # 执行转发规则删除
+    echo "[del] port $_echo_rule"
+    set -x
+    iptables -t nat -D PREROUTING  $_prerouting
+    iptables -t nat -D POSTROUTING $_postrouting
+fi
+
