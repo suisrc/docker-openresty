@@ -64,7 +64,7 @@ start_proxy() {
     # 补充一下多转发的重定向，与之前的配置不冲突, 这里只支持ipv4, 增加了一种更加灵活的指定转发的方式
     # 只有一个配置，SRC_DEST_PORTS， 确认是否需要ipv4的转发支持
     if [ $(cat /proc/sys/net/ipv4/ip_forward) == 1 ]; then
-      for src_dest in ${SRC_DEST_PORTS}; done
+      for src_dest in ${SRC_DEST_PORTS}; do
         p2p add $src_dest # 相关内容在 /usr/bin/p2p 中完成
       done
     fi
