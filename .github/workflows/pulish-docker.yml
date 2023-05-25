@@ -2,7 +2,7 @@ name: publish-docker
 
 on:
   push:
-    branches: [ plus ]
+    branches: [ plus-ubuntu ]
 
 env:
   DOCKER_IMAGE_NAME: suisrc/openresty
