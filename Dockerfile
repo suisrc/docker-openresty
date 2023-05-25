@@ -1,6 +1,6 @@
 # https://hub.docker.com/r/openresty/openresty/tags
 
-FROM debian:bullseye-slim as builder
+FROM ubuntu:jammy as builder
 
 ARG REST_VERSION_M=1.21.4
 ARG REST_VERSION=${REST_VERSION_M}.1
@@ -60,7 +60,7 @@ RUN mkdir /usr/local/openresty/lualib/resty/socket && \
         sed -i -e 's/"resty./"resty.socket./g'  /usr/local/openresty/lualib/resty/socket/http.lua
 
 # build runner
-FROM debian:bullseye-slim as runner
+FROM ubuntu:jammy as runner
 
 # copy openresty binary form builder to runner
 COPY --from=builder /usr/local/openresty /usr/local/openresty
