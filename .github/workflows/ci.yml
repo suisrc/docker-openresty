@@ -2,17 +2,17 @@ name: publish-docker
 
 on:
   push:
-    branches: [ master ]
+    branches: [ nginx ]
 
 env:
-  GITHUB_IMAGE_NAME: openresty
   DOCKER_IMAGE_NAME: suisrc/openresty
-  DOCKER_VERSION: '1.19.9.1-10'
+  DOCKER_VERSION: '1.25.0-ngx-1'
+
   QUAY_REGISTRY: quay.io
   DOCKER_REGISTRY: docker.io
 
 jobs:
-  build-docker:
+  build:
     runs-on: ubuntu-latest
 
     steps:
