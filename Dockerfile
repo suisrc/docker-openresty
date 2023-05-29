@@ -1,8 +1,11 @@
 # https://hub.docker.com/_/nginx
-FROM nginx/1.25.0-bullseye
+# FROM nginx:1.25.0-bullseye
+FROM nginx:1.25.0-alpine-slim
 
-RUN apt update && apt install --no-install-recommends -y inotify-tools &&\
-    rm -rf /tmp/* /var/tmp/* /var/lib/apt/lists/*
+# RUN apt update && apt install --no-install-recommends -y inotify-tools &&\
+#     rm -rf /tmp/* /var/tmp/* /var/lib/apt/lists/*
+
+RUN apk add --no-cache inotify-tools
 
 # Copy nginx configuration files
 COPY nginx.conf /etc/nginx/nginx.conf
