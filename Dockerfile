@@ -10,7 +10,7 @@ RUN apk add --no-cache inotify-tools
 # Copy nginx configuration files
 COPY nginx.conf /etc/nginx/nginx.conf
 ADD ["base.conf", "default.conf", "/etc/nginx/conf.d/"]
-RUN ln -sf /usr/share/nginx/html/ /www/
+RUN ln -sf /usr/share/nginx/html /www
 
 # 部署启动文件
 ADD  ["*.sh", "/cmd/"]
