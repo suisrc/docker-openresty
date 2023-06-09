@@ -90,4 +90,10 @@ start_proxy
 if [ ! -e /pause ]; then
     mkfifo /pause
 fi
+
+cleanup() {
+    echo "" >/pause
+}
+trap cleanup TERM
+
 </pause
