@@ -46,6 +46,12 @@ else
     dest_port=${dest} # Only PORT
 fi
 
+if [[ $dest_ip == "IP.GW" ]]; then
+    dest_ip=$(ip route show | grep via | head -n 1 | awk '{print $3}')  # gateway -> 特殊处理， 在kube中很有用
+#else if [[ $dest_ip == IP.* ]]; then
+#    dest_ip=   # 获取, 通过域名获取IP
+fi
+
 # 执行的参数
 _echo_rule="port ${src_port}/${dest_proto} to ${dest_ip}:${dest_port}"
 _prerouting="! -s ${dest_ip}/32 -p ${dest_proto} --dport ${src_port} -j DNAT --to ${dest_ip}:${dest_port}"
