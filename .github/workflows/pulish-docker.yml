@@ -2,11 +2,11 @@ name: publish-docker
 
 on:
   push:
-    branches: [ plus-ubuntu ]
+    branches: [ plus-debian ]
 
 env:
   DOCKER_IMAGE_NAME: suisrc/openresty
-  DOCKER_VERSION: '1.21.4.1-hu-3'
+  DOCKER_VERSION: '1.27.1.2-hd-1'
 
   QUAY_REGISTRY: quay.io
   DOCKER_REGISTRY: docker.io

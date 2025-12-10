@@ -1,9 +1,9 @@
 # https://hub.docker.com/r/openresty/openresty/tags
 
-FROM ubuntu:jammy as builder
+FROM debian:bookworm-slim as builder
 
-ARG REST_VERSION_M=1.21.4
-ARG REST_VERSION=${REST_VERSION_M}.1
+ARG REST_VERSION_M=1.27.1
+ARG REST_VERSION=${REST_VERSION_M}.2
 
 RUN DEBIAN_FRONTEND=noninteractive apt update \
     && apt install -y --no-install-recommends \
@@ -19,7 +19,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt update \
     && rm -rf /var/lib/apt/lists/*
 
 # 构建openresty
-RUN wget https://github.com/chobits/ngx_http_proxy_connect_module/archive/refs/tags/v0.0.3.tar.gz \
+RUN wget https://github.com/chobits/ngx_http_proxy_connect_module/archive/refs/tags/v0.0.7.tar.gz \
     -O ngx_hpc_module.tar.gz && tar -xzf ngx_hpc_module.tar.gz && \
     wget https://openresty.org/download/openresty-${REST_VERSION}.tar.gz && \
     tar -zxf openresty-${REST_VERSION}.tar.gz && cd openresty-${REST_VERSION} && \
@@ -45,22 +45,22 @@ RUN wget https://github.com/chobits/ngx_http_proxy_connect_module/archive/refs/t
       --with-http_flv_module \
       --with-http_mp4_module \
       --with-http_gunzip_module \
-      --add-module=../ngx_http_proxy_connect_module-0.0.3 && \
-    patch -d build/nginx-${REST_VERSION_M}/ -p 1 < ../ngx_http_proxy_connect_module-0.0.3/patch/proxy_connect_rewrite_102101.patch && \
+      --add-module=../ngx_http_proxy_connect_module-0.0.7 && \
+    patch -d build/nginx-${REST_VERSION_M}/ -p 1 < ../ngx_http_proxy_connect_module-0.0.7/patch/proxy_connect_rewrite_102101.patch && \
     make && make install
 
 # 安装lua_resty_socket_logger,lua_resty_socket_http模块
 RUN mkdir /usr/local/openresty/lualib/resty/socket && \
-    wget https://github.com/suisrc/lua-resty-logger-socket/archive/refs/tags/v0.0.1.tar.gz \
+    wget https://github.com/cloudflare/lua-resty-logger-socket/archive/refs/tags/v0.1.tar.gz \
         -O lua_logger.tar.gz && tar -xzf lua_logger.tar.gz && \
-        cp lua-resty-logger-socket-0.0.1/lib/resty/logger/socket.lua /usr/local/openresty/lualib/resty/socket/logger.lua &&\
-    wget https://github.com/suisrc/lua-resty-http/archive/refs/tags/v0.17.0.tar.gz \
+        cp lua-resty-logger-socket-0.1/lib/resty/logger/socket.lua /usr/local/openresty/lualib/resty/socket/logger.lua &&\
+    wget https://github.com/ledgetech/lua-resty-http/archive/refs/tags/v0.17.2.tar.gz \
         -O lua_http_req.tar.gz && tar -xzf lua_http_req.tar.gz && \
-        cp lua-resty-http-0.17.0/lib/resty/* /usr/local/openresty/lualib/resty/socket/ &&\
+        cp lua-resty-http-0.17.2/lib/resty/* /usr/local/openresty/lualib/resty/socket/ &&\
         sed -i -e 's/"resty./"resty.socket./g'  /usr/local/openresty/lualib/resty/socket/http.lua
 
 # build runner
-FROM ubuntu:jammy as runner
+FROM debian:bookworm-slim as runner
 
 # copy openresty binary form builder to runner
 COPY --from=builder /usr/local/openresty /usr/local/openresty
