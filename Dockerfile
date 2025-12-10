@@ -1,6 +1,5 @@
 # https://hub.docker.com/_/nginx
-# FROM nginx:1.25.0-bullseye
-FROM nginx:1.25.0-alpine-slim
+FROM nginx:1.29.4-alpine-slim
 
 # RUN apt update && apt install --no-install-recommends -y inotify-tools &&\
 #     rm -rf /tmp/* /var/tmp/* /var/lib/apt/lists/*

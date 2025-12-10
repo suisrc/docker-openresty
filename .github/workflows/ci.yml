@@ -6,7 +6,7 @@ on:
 
 env:
   DOCKER_IMAGE_NAME: suisrc/openresty
-  DOCKER_VERSION: '1.25.0-ngx-2'
+  DOCKER_VERSION: '1.29.4-nx-1'
 
   QUAY_REGISTRY: quay.io
   DOCKER_REGISTRY: docker.io
